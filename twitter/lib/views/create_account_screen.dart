@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter/views/customize_experience_screen.dart';
+import 'package:twitter/views/otp_screen.dart';
 
 import '../constants/gaps.dart';
 import '../constants/sizes.dart';
@@ -208,141 +209,6 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     ),
                   )
                 : Container(),
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 40),
-            //   child: _agreed
-            //       ? Column(
-            //           children: [
-            //             RichText(
-            //               text: TextSpan(
-            //                 style: TextStyle(
-            //                   fontWeight: FontWeight.w300,
-            //                   color: Colors.grey.shade800,
-            //                 ),
-            //                 children: [
-            //                   const TextSpan(
-            //                     text: "By signing up, you agree to the ",
-            //                   ),
-            //                   TextSpan(
-            //                     text: "Terms of Service",
-            //                     style: TextStyle(
-            //                       color: Colors.blue.shade700,
-            //                     ),
-            //                   ),
-            //                   const TextSpan(
-            //                     text: " and ",
-            //                   ),
-            //                   TextSpan(
-            //                     text: "Privacy Policy",
-            //                     style: TextStyle(
-            //                       color: Colors.blue.shade700,
-            //                     ),
-            //                   ),
-            //                   const TextSpan(
-            //                     text: ", including ",
-            //                   ),
-            //                   TextSpan(
-            //                     text: "Cookie Use",
-            //                     style: TextStyle(
-            //                       color: Colors.blue.shade700,
-            //                     ),
-            //                   ),
-            //                   const TextSpan(
-            //                     text:
-            //                         ". Twitter\nmay use your contact information, including your\nemail address and phone number for purposes\noutlined in our Privacy Policy, like keeping your\naccount secure and personalizing our services,\nincluding ads. ",
-            //                   ),
-            //                   TextSpan(
-            //                     text: "Learn more",
-            //                     style: TextStyle(
-            //                       color: Colors.blue.shade700,
-            //                     ),
-            //                   ),
-            //                   const TextSpan(
-            //                     text:
-            //                         ". Others will be able to\nfind you by email or phone number, when provided,\nunless you choose otherwise. ",
-            //                   ),
-            //                   TextSpan(
-            //                     text: "here",
-            //                     style: TextStyle(
-            //                       color: Colors.blue.shade700,
-            //                     ),
-            //                   ),
-            //                   const TextSpan(text: "."),
-            //                 ],
-            //               ),
-            //             ),
-            //             Gaps.v24,
-            //             Container(
-            //               width: double.infinity,
-            //               decoration: BoxDecoration(
-            //                 color: Colors.blue,
-            //                 borderRadius: BorderRadius.circular(30),
-            //               ),
-            //               child: TextButton(
-            //                 onPressed: () {},
-            //                 child: const Text(
-            //                   "Sign up",
-            //                   style: TextStyle(
-            //                     color: Colors.white,
-            //                     fontSize: 18,
-            //                     fontWeight: FontWeight.bold,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         )
-            //       : Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             _writingEmail
-            //                 ? const Text(
-            //                     "Use phone instead",
-            //                     style: TextStyle(
-            //                       fontSize: 18,
-            //                     ),
-            //                   )
-            //                 : Container(),
-            //             GestureDetector(
-            //               onTap: () {
-            //                 if (_isFormValid()) {
-            //                   ref.read(signUpForm.notifier).state = {
-            //                     "name": _name,
-            //                     "email": _email,
-            //                     "birthday": _birthdayController.text,
-            //                   };
-            //                   Navigator.push(
-            //                     context,
-            //                     MaterialPageRoute(
-            //                       builder: (context) =>
-            //                           const CustomizeExperienceScreen(),
-            //                     ),
-            //                   );
-            //                 }
-            //               },
-            //               child: Container(
-            //                 width: Sizes.size96,
-            //                 height: 47,
-            //                 decoration: BoxDecoration(
-            //                   color:
-            //                       _isFormValid() ? Colors.black : Colors.grey,
-            //                   borderRadius: BorderRadius.circular(30),
-            //                 ),
-            //                 child: const Center(
-            //                   child: Text(
-            //                     "Next",
-            //                     style: TextStyle(
-            //                       color: Colors.white,
-            //                       fontSize: 18,
-            //                       fontWeight: FontWeight.bold,
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            // ),
           ],
         ),
       ),
@@ -419,7 +285,14 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OtpScreen(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         "Sign up",
                         style: TextStyle(
