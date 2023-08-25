@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/views/sign_up_screen.dart';
+import 'package:twitter/widgets/twitter_icon.dart';
 
 import '../constants/sizes.dart';
 
@@ -56,9 +57,14 @@ extension LeadingTypeExtension on LeadingType {
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final LeadingType leadingType;
+  final Widget? title;
+  final bool showTitle;
+
   const AppBarWidget({
     super.key,
     required this.leadingType,
+    this.title,
+    this.showTitle = false,
   });
 
   @override
@@ -66,10 +72,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leadingWidth: 90,
       leading: leadingType.intoWidget(context),
-      title: const Icon(
-        FontAwesomeIcons.twitter,
-        color: Colors.blue,
-        size: 32,
+      title: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: showTitle ? title : const TwitterIcon(),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0,

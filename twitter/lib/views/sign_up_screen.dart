@@ -43,12 +43,12 @@ class SignUpScreen extends StatelessWidget {
                 painter: GoogleLogoPainter(),
                 size: const Size.square(Sizes.size16),
               ),
-              text: "Continue with Google",
+              payload: "Continue with Google",
             ),
             Gaps.v12,
             const AuthButton(
               icon: FaIcon(FontAwesomeIcons.apple),
-              text: "Continue with Apple",
+              payload: "Continue with Apple",
             ),
             Gaps.v12,
             Row(
@@ -85,7 +85,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  text: "Create account",
+                  payload: "Create account",
                 ),
                 Gaps.v24,
                 RichText(

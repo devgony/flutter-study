@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter/views/customize_experience_screen.dart';
+import 'package:twitter/views/otp_screen.dart';
 
 import '../constants/gaps.dart';
 import '../constants/sizes.dart';
@@ -268,7 +269,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OtpScreen(
+                              email: _formData["email"],
+                            ),
+                          ),
+                        );
+                      },
                       child: const Text(
                         "Sign up",
                         style: TextStyle(
