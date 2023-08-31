@@ -6,11 +6,22 @@ import 'package:threads/widgets/reply_timeline.dart';
 import '../constants/gaps.dart';
 import '../utils.dart';
 import 'image_carousel.dart';
+import 'more_bottom_sheet.dart';
 
 class Thread extends StatelessWidget {
   const Thread({
     Key? key,
   }) : super(key: key);
+
+  void _onTapMore(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const MoreBottomSheet(),
+      constraints: BoxConstraints(
+        maxHeight: getScreenHeight(context) * 0.4,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +68,13 @@ class Thread extends StatelessWidget {
                         children: [
                           Text("${since}m"),
                           Gaps.h12,
-                          const Icon(FontAwesomeIcons.ellipsis, size: 16)
+                          GestureDetector(
+                            onTap: () => _onTapMore(context),
+                            child: const Icon(
+                              FontAwesomeIcons.ellipsis,
+                              size: 16,
+                            ),
+                          )
                         ],
                       ),
                     ],
