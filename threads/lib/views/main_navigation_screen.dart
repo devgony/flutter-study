@@ -7,6 +7,7 @@ import 'package:threads/views/discover_screen.dart';
 import 'package:threads/views/write_screen.dart';
 
 import '../../../constants/sizes.dart';
+import '../utils.dart';
 import '../widgets/nav_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -25,6 +26,18 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  _onWriteTap() {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) => const WriteScreen(),
+      constraints: BoxConstraints(
+        maxHeight: getScreenHeight(context) * 0.9,
+      ),
+      isScrollControlled: true,
+    );
   }
 
   @override
@@ -88,7 +101,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   isSelected: _selectedIndex == 2,
                   icon: FontAwesomeIcons.penToSquare,
                   selectedIcon: FontAwesomeIcons.solidPenToSquare,
-                  onTap: () => _onTap(2),
+                  onTap: () => _onWriteTap(),
                   selectedIndex: _selectedIndex,
                 ),
                 NavTab(
