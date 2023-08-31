@@ -27,7 +27,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<String> _tabs = [
     "home",
     "discover",
-    "write",
+    "xxxx",
     "like",
     "profile",
   ];
@@ -44,6 +44,18 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // void _onPostVideoButtonTap() {
   //   context.pushNamed(VideoRecordingScreen.routeName);
   // }
+
+  _onWriteTap() {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) => WriteScreen(),
+      constraints: BoxConstraints(
+        maxHeight: getScreenHeight(context) * 0.9,
+      ),
+      isScrollControlled: true,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +85,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             offstage: _selectedIndex != 1,
             child: const DiscoverScreen(),
           ),
-          Offstage(
-            offstage: _selectedIndex != 2,
-            child: const PostScreen(),
-          ),
+          // Offstage(
+          // offstage: _selectedIndex != 2,
+          // child: const WriteScreen(),
+          // ),
           Offstage(
             offstage: _selectedIndex != 3,
             child: const LikeScreen(),
@@ -115,11 +127,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIndex: _selectedIndex,
                 ),
                 NavTab(
-                  text: "Post",
+                  text: "Write",
                   isSelected: _selectedIndex == 2,
                   icon: FontAwesomeIcons.penToSquare,
                   selectedIcon: FontAwesomeIcons.solidPenToSquare,
-                  onTap: () => _onTap(2),
+                  onTap: () => _onWriteTap(),
                   selectedIndex: _selectedIndex,
                 ),
                 NavTab(

@@ -6,6 +6,7 @@ import '../constants/gaps.dart';
 import '../constants/sizes.dart';
 import '../utils.dart';
 import 'image_carousel.dart';
+import 'more.dart';
 
 class Thread extends StatelessWidget {
   const Thread({
@@ -62,6 +63,16 @@ class Thread extends StatelessWidget {
     }
   }
 
+  void _onTapMore(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const More(),
+      constraints: BoxConstraints(
+        maxHeight: getScreenHeight(context) * 0.4,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final faker = Faker();
@@ -75,6 +86,7 @@ class Thread extends StatelessWidget {
 
     final repliers = List.generate(replies, (index) => getImage());
     final images = List.generate(5, (index) => getImage());
+
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -180,7 +192,13 @@ class Thread extends StatelessWidget {
                         children: [
                           Text("${since}m"),
                           Gaps.h12,
-                          const Icon(FontAwesomeIcons.ellipsis, size: 16)
+                          GestureDetector(
+                            onTap: () => _onTapMore(context),
+                            child: const Icon(
+                              FontAwesomeIcons.ellipsis,
+                              size: 16,
+                            ),
+                          )
                         ],
                       ),
                     ],

@@ -10,7 +10,7 @@ final routerProvider = Provider((ref) {
     // },
     routes: [
       GoRoute(
-        path: "/:tab(home|discover|write|like|profile)",
+        path: "/:tab(home|discover|like|profile)",
         name: MainNavigationScreen.routeName,
         builder: (context, state) {
           final tab = state.pathParameters["tab"]!;
