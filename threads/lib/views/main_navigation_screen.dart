@@ -3,9 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:threads/utils.dart';
 import 'package:threads/views/home_screen.dart';
-import 'package:threads/views/like_screen.dart';
+import 'package:threads/views/activity_screen.dart';
 import 'package:threads/views/profile_screen.dart';
-import 'package:threads/views/discover_screen.dart';
+import 'package:threads/views/search_screen.dart';
 import 'package:threads/views/write_screen.dart';
 
 import '../../../constants/sizes.dart';
@@ -26,9 +26,9 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<String> _tabs = [
     "home",
-    "discover",
+    "search",
     "xxxx",
-    "like",
+    "activity",
     "profile",
   ];
 
@@ -49,7 +49,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
-      builder: (context) => WriteScreen(),
+      builder: (context) => const WriteScreen(),
       constraints: BoxConstraints(
         maxHeight: getScreenHeight(context) * 0.9,
       ),
@@ -83,7 +83,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const DiscoverScreen(),
+            child: const SearchScreen(),
           ),
           // Offstage(
           // offstage: _selectedIndex != 2,
@@ -91,7 +91,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           // ),
           Offstage(
             offstage: _selectedIndex != 3,
-            child: const LikeScreen(),
+            child: const ActivityScreen(),
           ),
           Offstage(
             offstage: _selectedIndex != 4,
@@ -119,7 +119,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIndex: _selectedIndex,
                 ),
                 NavTab(
-                  text: "Discover",
+                  text: "Search",
                   isSelected: _selectedIndex == 1,
                   icon: FontAwesomeIcons.compass,
                   selectedIcon: FontAwesomeIcons.solidCompass,
@@ -135,7 +135,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIndex: _selectedIndex,
                 ),
                 NavTab(
-                  text: "Like",
+                  text: "Activity",
                   isSelected: _selectedIndex == 3,
                   icon: FontAwesomeIcons.heart,
                   selectedIcon: FontAwesomeIcons.solidHeart,
