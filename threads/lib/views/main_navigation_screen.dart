@@ -95,7 +95,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 4,
-            child: const ProfileScreen(),
+            child: const ProfileScreen(tab: "like"),
           ),
         ],
       ),
