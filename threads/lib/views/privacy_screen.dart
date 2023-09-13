@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class PrivacyScreen extends StatefulWidget {
   const PrivacyScreen({super.key});
   static const routeName = 'privacy';
-  static const routeUrl = '/privacy';
+  static const routeUrl = 'privacy';
 
   @override
   State<PrivacyScreen> createState() => _PrivacyScreenState();

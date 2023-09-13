@@ -7,13 +7,13 @@ import 'package:threads/views/settings.screen.dart';
 
 final routerProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: "/home",
+    initialLocation: "/",
     // redirect: (context, state) {
-    //   return null;
+    //   return "/home";
     // },
     routes: [
       GoRoute(
-        path: "/:tab(home|search|activity|profile)",
+        path: "/:tab(|search|activity|profile)",
         name: MainNavigationScreen.routeName,
         builder: (context, state) {
           final tab = state.pathParameters["tab"]!;
@@ -26,13 +26,15 @@ final routerProvider = Provider((ref) {
         builder: (context, state) {
           return const SettingsScreen();
         },
-      ),
-      GoRoute(
-        path: PrivacyScreen.routeUrl,
-        name: PrivacyScreen.routeName,
-        builder: (context, state) {
-          return const PrivacyScreen();
-        },
+        routes: [
+          GoRoute(
+            path: PrivacyScreen.routeUrl,
+            name: PrivacyScreen.routeName,
+            builder: (context, state) {
+              return const PrivacyScreen();
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: CameraScreen.routeUrl,
