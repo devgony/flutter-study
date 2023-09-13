@@ -21,8 +21,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leading: const Icon(Icons.public),
         centerTitle: true,
         actions: [
@@ -134,6 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: Colors.grey,
                                   ),
                                 ),
+                                Gaps.v12,
                               ],
                             ),
                             Gaps.v12,
@@ -152,9 +155,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                     ),
-                                    child: const Text(
+                                    child: Text(
                                       'Edit profile',
-                                      style: TextStyle(color: Colors.black),
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -170,10 +177,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                     ),
-                                    child: const Text(
+                                    child: Text(
                                       'Share profile',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     ),
                                   ),

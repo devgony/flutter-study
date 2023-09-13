@@ -48,6 +48,36 @@ class App extends StatelessWidget {
           iconColor: Colors.black,
         ),
       ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        textTheme: Typography.whiteMountainView,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: const Color(0xFFE9435A),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFFE9435A),
+        ),
+        splashColor: Colors.transparent,
+        appBarTheme: const AppBarTheme(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+          surfaceTintColor: Colors.black,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: Sizes.size16 + Sizes.size2,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade500,
+          indicatorColor: Colors.white,
+        ),
+        listTileTheme: const ListTileThemeData(
+          iconColor: Colors.white,
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:threads/utils.dart';
 
 class PrivacyScreen extends StatefulWidget {
   const PrivacyScreen({super.key});
@@ -14,6 +15,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
   bool _isPrivate = false;
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     const lists = [
       [Icons.comment, 'Mentions'],
       [Icons.museum_outlined, 'Muted'],
@@ -29,7 +31,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
           onPressed: () => Navigator.of(context).pop(),
           style: TextButton.styleFrom(
             backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
+            foregroundColor: isDark ? Colors.white : Colors.black,
           ),
         ),
         title: const Text('Privacy'),

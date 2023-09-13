@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:threads/repos/user_repo.dart';
 
 import '../constants/gaps.dart';
+import '../utils.dart';
 import '../widgets/search_tile.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -31,6 +32,7 @@ class _DiscoverScreenState extends State<SearchScreen> {
   Widget build(
     BuildContext context,
   ) {
+    final isDark = isDarkMode(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -45,14 +47,14 @@ class _DiscoverScreenState extends State<SearchScreen> {
             CupertinoTextField(
               controller: _searchController,
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: isDark ? Colors.grey.shade900 : Colors.grey.shade200,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(10),
                 ),
               ),
-              prefix: const Icon(
+              prefix: Icon(
                 Icons.search,
-                color: Colors.grey,
+                color: isDark ? Colors.white : Colors.black,
               ),
               placeholder: "Search",
             ),
@@ -69,7 +71,9 @@ class _DiscoverScreenState extends State<SearchScreen> {
                       ),
                       itemCount: snapshot.data!.length,
                       separatorBuilder: (context, index) => Divider(
-                        color: Colors.grey.shade300,
+                        color: isDark
+                            ? Colors.grey.shade900
+                            : Colors.grey.shade200,
                         indent: 72,
                       ),
                     ),

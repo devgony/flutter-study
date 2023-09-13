@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:threads/widgets/border_white.dart';
 import 'package:threads/widgets/go_to_top_button.dart';
 
 import '../constants/gaps.dart';
@@ -46,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'assets/thread.svg',
                   width: 32,
                   height: 32,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                   colorBlendMode: BlendMode.srcIn,
                 ),
               ),

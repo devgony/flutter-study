@@ -30,7 +30,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   _onWriteTap() {
     showModalBottomSheet(
-      backgroundColor: Colors.white,
+      backgroundColor:
+          isDarkMode(context) ? Colors.grey.shade900 : Colors.white,
       context: context,
       builder: (context) => const WriteScreen(),
       constraints: BoxConstraints(
@@ -42,9 +43,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       body: Stack(
         children: [
           Offstage(
@@ -70,7 +72,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ],
       ),
       bottomNavigationBar: Container(
-        color: Colors.white,
+        color: isDark ? Colors.black : Colors.white,
         child: Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).padding.bottom + Sizes.size12,

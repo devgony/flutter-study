@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
@@ -9,3 +10,6 @@ String getImage() {
 
 double getScreenHeight(BuildContext context) =>
     MediaQuery.of(context).size.height;
+
+bool isDarkMode(BuildContext context) =>
+    MediaQuery.of(context).platformBrightness == Brightness.dark;

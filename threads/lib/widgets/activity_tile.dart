@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
+import '../utils.dart';
 
 class ActivityTile extends StatelessWidget {
   final UserModel userModel;
@@ -10,6 +11,7 @@ class ActivityTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     final faker = Faker();
     final activity = faker.randomGenerator.element([
       'Mentioned you',
@@ -56,8 +58,8 @@ class ActivityTile extends StatelessWidget {
           ),
           Text(
             payload,
-            style: const TextStyle(
-              color: Colors.black,
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black,
             ),
           ),
         ],

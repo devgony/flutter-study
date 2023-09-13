@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:threads/utils.dart';
 import 'package:threads/views/privacy_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _loggingOut = false;
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     const lists = [
       [Icons.person, 'Follow and invite friends'],
       [Icons.notification_add, 'Notificatoins'],
@@ -34,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onPressed: () => Navigator.of(context).pop(),
           style: TextButton.styleFrom(
             backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
+            foregroundColor: isDark ? Colors.white : Colors.black,
           ),
         ),
         title: const Text('Settings'),

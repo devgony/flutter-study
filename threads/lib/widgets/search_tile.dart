@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
+import '../utils.dart';
 
 class SearchTile extends StatefulWidget {
   final UserModel userModel;
@@ -15,6 +16,7 @@ class _SearchTileState extends State<SearchTile> {
   bool _following = false;
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
@@ -31,8 +33,8 @@ class _SearchTileState extends State<SearchTile> {
           Gaps.v12,
           Text(
             "${widget.userModel.followers} followers",
-            style: const TextStyle(
-              color: Colors.black,
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black,
             ),
           ),
         ],
@@ -48,7 +50,11 @@ class _SearchTileState extends State<SearchTile> {
           height: 30,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: _following ? Colors.black : Colors.transparent,
+            color: _following
+                ? isDark
+                    ? Colors.white
+                    : Colors.black
+                : Colors.transparent,
             border: const Border(
               top: BorderSide(
                 color: Colors.grey,
@@ -68,17 +74,17 @@ class _SearchTileState extends State<SearchTile> {
             ),
           ),
           child: _following
-              ? const Text(
+              ? Text(
                   'Following',
                   style: TextStyle(
-                    color: Colors.white,
+                    backgroundColor: isDark ? Colors.black : Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 )
-              : const Text(
+              : Text(
                   'Follow',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
         ),

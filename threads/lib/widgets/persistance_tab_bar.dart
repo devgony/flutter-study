@@ -21,7 +21,9 @@ class PersistentTabBar extends SliverPersistentHeaderDelegate {
         indicatorSize: TabBarIndicatorSize.tab,
         indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
         tabs: const [
-          Center(child: Text('Threads')),
+          Center(
+            child: Text('Threads'),
+          ),
           Center(child: Text('Replies')),
         ],
       ),

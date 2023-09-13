@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threads/repos/user_repo.dart';
+import 'package:threads/utils.dart';
 
 import '../widgets/activity_tile.dart';
 
@@ -7,9 +8,8 @@ class ActivityScreen extends StatelessWidget {
   const ActivityScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -19,6 +19,7 @@ class ActivityScreen extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               elevation: 0,
+              backgroundColor: Colors.transparent,
               centerTitle: false,
               title: const Text(
                 "Activity",
@@ -31,12 +32,12 @@ class ActivityScreen extends StatelessWidget {
                 ),
                 dividerColor: Colors.transparent,
                 indicatorColor: Colors.transparent,
-                unselectedLabelColor: Colors.black,
+                unselectedLabelColor: isDark ? Colors.white : Colors.black,
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorWeight: 0,
-                labelColor: Colors.white,
+                labelColor: isDark ? Colors.black : Colors.white,
                 indicator: BoxDecoration(
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey.shade400, width: 1),
                 ),
