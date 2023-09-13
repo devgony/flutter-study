@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:threads/constants/breakpoints.dart';
 import 'package:threads/views/settings.screen.dart';
 import 'package:threads/widgets/thread.dart';
@@ -21,8 +22,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leading: const Icon(Icons.public),
         centerTitle: true,
         actions: [
@@ -32,12 +35,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
-                ),
-              );
+              context.push(SettingsScreen.routeUrl);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const SettingsScreen(),
+              //   ),
+              // );
             },
             icon: const Icon(Icons.menu),
           ),
@@ -57,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: NestedScrollView(
                 headerSliverBuilder: ((context, innerBoxIsScrolled) => [
                       SliverAppBar(
+                        backgroundColor: Colors.transparent,
                         expandedHeight: 176,
                         flexibleSpace: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -158,9 +163,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 BorderRadius.circular(15),
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'Edit profile',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -177,10 +186,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 BorderRadius.circular(15),
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'Share profile',
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         ),
                                       ),
