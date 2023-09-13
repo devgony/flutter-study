@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:threads/views/main_navigation_screen.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:threads/router.dart';
 import 'constants/sizes.dart';
 
 void main() {
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   runApp(const App());
 }
 
@@ -14,8 +15,8 @@ class App extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    return MaterialApp(
-      home: const MainNavigationScreen(),
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Nreads',
       themeMode: ThemeMode.system,
       theme: ThemeData(

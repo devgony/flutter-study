@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:threads/views/home_screen.dart';
 import 'package:threads/views/activity_screen.dart';
 import 'package:threads/views/profile_screen.dart';
@@ -11,8 +12,11 @@ import '../utils.dart';
 import '../widgets/nav_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
+  static const String routeName = '/';
+  final String tab;
   const MainNavigationScreen({
     super.key,
+    required this.tab,
   });
 
   @override
@@ -20,9 +24,18 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  late int _selectedIndex = 0;
+  final List<String> _tabs = [
+    "",
+    "search",
+    "xxxx",
+    "activity",
+    "profile",
+  ];
+
+  late int _selectedIndex = _tabs.indexOf(widget.tab);
 
   void _onTap(int index) {
+    context.go("/${_tabs[index]}");
     setState(() {
       _selectedIndex = index;
     });

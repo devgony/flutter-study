@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: ^2.0.5
   faker: ^2.1.0
   image_picker: 0.8.6+1
+  go_router: ^12.0.0
 
 dev_dependencies:
   flutter_test:

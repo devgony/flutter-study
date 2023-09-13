@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:threads/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:threads/views/privacy_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -51,12 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: Icon(e[0] as IconData),
                   title: Text(e[1] as String),
                   onTap: e[1] == "Privacy"
-                      ? () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PrivacyScreen(),
-                            ),
-                          )
+                      ? () => context.pushNamed(PrivacyScreen.routeName)
                       : null,
                 ),
               )
