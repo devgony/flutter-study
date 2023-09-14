@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
-import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 
 class SearchTile extends StatefulWidget {
   final UserModel userModel;
@@ -16,7 +17,7 @@ class _SearchTileState extends State<SearchTile> {
   bool _following = false;
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(

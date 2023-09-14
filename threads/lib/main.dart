@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threads/repos/settings_repo.dart';
 import 'package:threads/router.dart';
+import 'package:threads/view_models/settings_view_model.dart';
+import 'package:provider/provider.dart' as provider;
 import 'constants/sizes.dart';
 
-void main() {
+void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  runApp(const App());
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final repository = SettingsRepository(sharedPreferences);
+  runApp(
+    provider.MultiProvider(
+      providers: [
+        provider.ChangeNotifierProvider(
+          create: (context) => SettingsViewModel(repository),
+        )
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -15,10 +31,11 @@ class App extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return MaterialApp.router(
       routerConfig: router,
       title: 'Nreads',
-      themeMode: ThemeMode.system,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
         textTheme: Typography.blackMountainView,

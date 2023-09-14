@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/repos/user_repo.dart';
 
 import '../constants/gaps.dart';
-import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 import '../widgets/search_tile.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _DiscoverScreenState extends State<SearchScreen> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),

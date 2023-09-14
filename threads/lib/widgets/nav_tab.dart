@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:threads/utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants/gaps.dart';
+import '../view_models/settings_view_model.dart';
 
 class NavTab extends StatelessWidget {
   const NavTab({
@@ -24,7 +25,8 @@ class NavTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
+
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(),

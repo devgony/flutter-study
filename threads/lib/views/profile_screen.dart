@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:threads/constants/breakpoints.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/views/settings_screen.dart';
 
+import '../constants/breakpoints.dart';
 import '../constants/gaps.dart';
 import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 import '../widgets/persistance_tab_bar.dart';
 import '../widgets/thread.dart';
 
@@ -21,7 +23,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

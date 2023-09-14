@@ -1,9 +1,10 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
-import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 
 class ActivityTile extends StatelessWidget {
   final UserModel userModel;
@@ -11,7 +12,7 @@ class ActivityTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     final faker = Faker();
     final activity = faker.randomGenerator.element([
       'Mentioned you',

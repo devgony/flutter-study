@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/widgets/go_to_top_button.dart';
 
 import '../constants/gaps.dart';
-import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 import '../widgets/thread.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,

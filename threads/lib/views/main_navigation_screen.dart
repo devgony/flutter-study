@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/views/home_screen.dart';
 import 'package:threads/views/activity_screen.dart';
 import 'package:threads/views/profile_screen.dart';
@@ -9,6 +10,7 @@ import 'package:threads/views/write_screen.dart';
 
 import '../../../constants/sizes.dart';
 import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 import '../widgets/nav_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -42,9 +44,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   _onWriteTap() {
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     showModalBottomSheet(
-      backgroundColor:
-          isDarkMode(context) ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       context: context,
       builder: (context) => const WriteScreen(),
       constraints: BoxConstraints(
@@ -56,7 +58,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: isDark ? Colors.black : Colors.white,

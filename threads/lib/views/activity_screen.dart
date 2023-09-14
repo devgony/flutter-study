@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/repos/user_repo.dart';
-import 'package:threads/utils.dart';
 
+import '../view_models/settings_view_model.dart';
 import '../widgets/activity_tile.dart';
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+  build(BuildContext context) {
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
