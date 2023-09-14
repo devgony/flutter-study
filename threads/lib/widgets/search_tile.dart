@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
 import '../view_models/settings_view_model.dart';
 
-class SearchTile extends StatefulWidget {
+class SearchTile extends ConsumerStatefulWidget {
   final UserModel userModel;
   const SearchTile({Key? key, required this.userModel}) : super(key: key);
 
   @override
-  State<SearchTile> createState() => _SearchTileState();
+  ConsumerState<SearchTile> createState() => _SearchTileState();
 }
 
-class _SearchTileState extends State<SearchTile> {
+class _SearchTileState extends ConsumerState<SearchTile> {
   bool _following = false;
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(

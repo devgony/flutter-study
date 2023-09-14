@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../constants/gaps.dart';
 import '../view_models/settings_view_model.dart';
 
-class NavTab extends StatelessWidget {
+class NavTab extends ConsumerWidget {
   const NavTab({
     super.key,
     required this.text,
@@ -24,9 +24,8 @@ class NavTab extends StatelessWidget {
   final int selectedIndex;
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(settingsProvider).darkMode;
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threads/repos/settings_repo.dart';
 import 'package:threads/router.dart';
 import 'package:threads/view_models/settings_view_model.dart';
-import 'package:provider/provider.dart' as provider;
 import 'constants/sizes.dart';
 
 void main() async {
@@ -13,25 +13,24 @@ void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final repository = SettingsRepository(sharedPreferences);
   runApp(
-    provider.MultiProvider(
-      providers: [
-        provider.ChangeNotifierProvider(
-          create: (context) => SettingsViewModel(repository),
-        )
+    ProviderScope(
+      overrides: [
+        settingsProvider.overrideWith(() => SettingsViewModel(repository)),
       ],
       child: const App(),
     ),
   );
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
   Widget build(
     BuildContext context,
+    WidgetRef ref,
   ) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return MaterialApp.router(
       routerConfig: router,
       title: 'Nreads',

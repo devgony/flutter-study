@@ -1,26 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:threads/view_models/settings_view_model.dart';
 import 'package:threads/views/privacy_screen.dart';
 
-import '../view_models/settings_view_model.dart';
-
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   static const routeName = 'settings';
   static const routeUrl = '/settings';
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _loggingOut = false;
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     const lists = [
       [Icons.person, 'Follow and invite friends'],
       [Icons.notification_add, 'Notificatoins'],
@@ -50,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SwitchListTile.adaptive(
             value: isDark,
             onChanged: (value) =>
-                context.read<SettingsViewModel>().setDarkMode(value),
+                ref.read(settingsProvider.notifier).setDarkMode(value),
             title: const Text("Dark mode"),
             subtitle: const Text("toggle dark mode"),
           ),

@@ -1,23 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threads/repos/user_repo.dart';
 
 import '../constants/gaps.dart';
 import '../view_models/settings_view_model.dart';
 import '../widgets/search_tile.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
   static const String routeName = 'search';
   static const String routeURL = '/search';
 
   @override
-  State<StatefulWidget> createState() => _DiscoverScreenState();
+  ConsumerState<SearchScreen> createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<SearchScreen> {
+class _DiscoverScreenState extends ConsumerState<SearchScreen> {
   final _searchController = TextEditingController();
 
   @override
@@ -33,7 +33,7 @@ class _DiscoverScreenState extends State<SearchScreen> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),

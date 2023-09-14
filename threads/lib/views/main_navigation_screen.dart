@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:threads/utils.dart';
 import 'package:threads/views/home_screen.dart';
 import 'package:threads/views/activity_screen.dart';
 import 'package:threads/views/profile_screen.dart';
@@ -9,11 +10,10 @@ import 'package:threads/views/search_screen.dart';
 import 'package:threads/views/write_screen.dart';
 
 import '../../../constants/sizes.dart';
-import '../utils.dart';
 import '../view_models/settings_view_model.dart';
 import '../widgets/nav_tab.dart';
 
-class MainNavigationScreen extends StatefulWidget {
+class MainNavigationScreen extends ConsumerStatefulWidget {
   static const String routeName = '/';
   final String tab;
   const MainNavigationScreen({
@@ -22,10 +22,11 @@ class MainNavigationScreen extends StatefulWidget {
   });
 
   @override
-  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
+  ConsumerState<MainNavigationScreen> createState() =>
+      _MainNavigationScreenState();
 }
 
-class _MainNavigationScreenState extends State<MainNavigationScreen> {
+class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   final List<String> _tabs = [
     "",
     "search",
@@ -44,7 +45,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   _onWriteTap() {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     showModalBottomSheet(
       backgroundColor: isDark ? Colors.black : Colors.white,
       context: context,
@@ -58,7 +59,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: isDark ? Colors.black : Colors.white,
