@@ -25,7 +25,6 @@ class _DiscoverScreenState extends ConsumerState<SearchScreen> {
     super.initState();
 
     _searchController.addListener(() {
-      // ref.read(usersProvider(_searchController.value.text));
       setState(() {});
     });
   }

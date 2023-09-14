@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:threads/constants/breakpoints.dart';
-import 'package:threads/views/settings.screen.dart';
+import 'package:threads/views/settings_screen.dart';
 import 'package:threads/widgets/thread.dart';
 
 import '../constants/gaps.dart';

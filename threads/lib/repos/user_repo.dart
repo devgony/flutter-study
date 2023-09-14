@@ -1,20 +1,3 @@
-// import 'dart:convert';
-// import 'dart:io';
-
-// void main() {
-//   final file = File('users.json');
-//   final jsonString = file.readAsStringSync();
-//   final jsonData = json.decode(jsonString);
-
-//   // Access the data in the JSON object
-//   for (final user in jsonData['users']) {
-//     print('Name: ${user['name']}');
-//     print('Email: ${user['email']}');
-//     print('Age: ${user['age']}');
-//     print('---');
-//   }
-// }
-
 import 'dart:convert';
 
 import 'package:flutter/services.dart';

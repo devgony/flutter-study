@@ -9,15 +9,11 @@ class UsersViewModel extends FamilyAsyncNotifier<List<UserModel>, String> {
   late final UserRepository _userRepository;
 
   @override
-  Future<List<UserModel>> build(String keyword) async {
+  Future<List<UserModel>> build(String arg) async {
     _userRepository = ref.read(userRepository);
 
-    return _userRepository.searchUsers(keyword);
+    return _userRepository.searchUsers(arg);
   }
-
-  // Future<List<UserModel>> searchUsers(String keyword) async {
-  //   return await _userRepository.searchUsers(keyword);
-  // }
 }
 
 final usersProvider =

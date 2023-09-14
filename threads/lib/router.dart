@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:threads/views/camera_screen.dart';
 import 'package:threads/views/main_navigation_screen.dart';
 import 'package:threads/views/privacy_screen.dart';
-import 'package:threads/views/settings.screen.dart';
+import 'package:threads/views/settings_screen.dart';
 
 final routerProvider = Provider((ref) {
   return GoRouter(
