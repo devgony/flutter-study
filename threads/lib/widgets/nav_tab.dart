@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../constants/gaps.dart';
 import '../view_models/settings_view_model.dart';
@@ -26,7 +25,7 @@ class NavTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(),

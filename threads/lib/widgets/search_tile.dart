@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
@@ -18,7 +17,7 @@ class _SearchTileState extends ConsumerState<SearchTile> {
   bool _following = false;
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(

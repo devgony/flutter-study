@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import 'package:threads/widgets/border_white.dart';
 
 import '../constants/gaps.dart';
@@ -51,7 +50,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,

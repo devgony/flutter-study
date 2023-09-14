@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart' as provider;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threads/repos/settings_repo.dart';
 import 'package:threads/router.dart';
@@ -16,13 +15,11 @@ void main() async {
   final repository = SettingsRepository(sharedPreferences);
 
   runApp(
-    provider.MultiProvider(
-      providers: [
-        provider.ChangeNotifierProvider(
-          create: (context) => SettingsViewModel(repository),
-        )
+    ProviderScope(
+      overrides: [
+        settingsProvider.overrideWith(() => SettingsViewModel(repository)),
       ],
-      child: const ProviderScope(child: App()),
+      child: const App(),
     ),
   );
 }
@@ -49,7 +46,7 @@ class AppState extends ConsumerState<App> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = context.watch<SettingsViewModel>().darkMode;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
