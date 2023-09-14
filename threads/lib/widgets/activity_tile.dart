@@ -1,6 +1,7 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
@@ -25,7 +26,7 @@ class ActivityTile extends ConsumerWidget {
     final payload = faker.lorem.sentence();
     final following = faker.randomGenerator.integer(5, min: 1) == 1;
 
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
 
     return ListTile(
       leading: CircleAvatar(

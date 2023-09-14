@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/constants/breakpoints.dart';
 import 'package:threads/views/settings_screen.dart';
 import 'package:threads/widgets/thread.dart';
@@ -24,7 +25,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

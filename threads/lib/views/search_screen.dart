@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/gaps.dart';
 import '../view_models/settings_view_model.dart';
@@ -33,7 +34,7 @@ class _DiscoverScreenState extends ConsumerState<SearchScreen> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),

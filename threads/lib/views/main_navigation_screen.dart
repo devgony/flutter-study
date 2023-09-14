@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/utils.dart';
 import 'package:threads/views/home_screen.dart';
 import 'package:threads/views/activity_screen.dart';
@@ -49,7 +50,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   // }
 
   _onWriteTap() {
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     showModalBottomSheet(
       backgroundColor: isDark ? Colors.black : Colors.white,
       context: context,
@@ -64,7 +65,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     // final isDark = darkModeConfig.value;
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,

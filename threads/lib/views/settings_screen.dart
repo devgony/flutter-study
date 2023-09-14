@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:threads/view_models/settings_view_model.dart';
 import 'package:threads/views/privacy_screen.dart';
 
@@ -19,7 +20,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _loggingOut = false;
   @override
   Widget build(BuildContext context) {
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     const lists = [
       [Icons.person, 'Follow and invite friends'],
       [Icons.notification_add, 'Notificatoins'],
@@ -58,9 +59,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           //   ),
           // ),
           SwitchListTile.adaptive(
-            value: ref.watch(settingsProvider).darkMode,
+            value: isDark,
             onChanged: (value) =>
-                ref.read(settingsProvider.notifier).setDarkMode(value),
+                context.read<SettingsViewModel>().setDarkMode(value),
             title: const Text("Dark mode"),
             subtitle: const Text("toggle dark mode"),
           ),

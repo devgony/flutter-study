@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threads/repos/settings_repo.dart';
 import 'package:threads/router.dart';
@@ -12,13 +13,16 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
-  final repo = SettingsRepo(sharedPreferences);
+  final repository = SettingsRepository(sharedPreferences);
+
   runApp(
-    ProviderScope(
-      overrides: [
-        settingsProvider.overrideWith(() => SettingsViewModel(repo)),
+    provider.MultiProvider(
+      providers: [
+        provider.ChangeNotifierProvider(
+          create: (context) => SettingsViewModel(repository),
+        )
       ],
-      child: const App(),
+      child: const ProviderScope(child: App()),
     ),
   );
 }
@@ -45,7 +49,7 @@ class AppState extends ConsumerState<App> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = ref.watch(settingsProvider).darkMode;
+    final isDark = context.watch<SettingsViewModel>().darkMode;
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
