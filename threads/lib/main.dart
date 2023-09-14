@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threads/repos/settings_repo.dart';
 import 'package:threads/router.dart';
+import 'package:threads/view_models/settings_view_model.dart';
 
 import 'constants/sizes.dart';
 
-void main() {
+void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  runApp(const ProviderScope(child: App()));
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final repo = SettingsRepo(sharedPreferences);
+  runApp(
+    ProviderScope(
+      overrides: [
+        settingsProvider.overrideWith(() => SettingsViewModel(repo)),
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 class App extends ConsumerStatefulWidget {
@@ -18,16 +31,9 @@ class App extends ConsumerStatefulWidget {
 }
 
 class AppState extends ConsumerState<App> {
-  // bool _isDarkMode = darkModeConfig.value;
   @override
   void initState() {
     super.initState();
-
-    // darkModeConfig.addListener(() {
-    //   setState(() {
-    //     _isDarkMode = darkModeConfig.value;
-    //   });
-    // });
   }
 
   @override
@@ -39,10 +45,10 @@ class AppState extends ConsumerState<App> {
   Widget build(
     BuildContext context,
   ) {
+    final isDark = ref.watch(settingsProvider).darkMode;
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
-      // themeMode: isDarkMode(context) ? ThemeMode.dark : ThemeMode.light,
-      themeMode: ThemeMode.system,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
         textTheme: Typography.blackMountainView,

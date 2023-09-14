@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:threads/constants/breakpoints.dart';
 import 'package:threads/views/settings_screen.dart';
@@ -6,9 +7,10 @@ import 'package:threads/widgets/thread.dart';
 
 import '../constants/gaps.dart';
 import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 import '../widgets/persistance_tab_bar.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   final String tab;
   const ProfileScreen({Key? key, required this.tab}) : super(key: key);
 
@@ -16,13 +18,13 @@ class ProfileScreen extends StatefulWidget {
   static const String routeName = 'profile';
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = ref.watch(settingsProvider).darkMode;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

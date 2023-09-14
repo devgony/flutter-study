@@ -1,22 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:threads/view_models/settings_view_model.dart';
 import 'package:threads/views/privacy_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   static const routeName = 'settings';
   static const routeUrl = '/settings';
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _loggingOut = false;
   @override
   Widget build(BuildContext context) {
+    final isDark = ref.watch(settingsProvider).darkMode;
     const lists = [
       [Icons.person, 'Follow and invite friends'],
       [Icons.notification_add, 'Notificatoins'],
@@ -35,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onPressed: () => Navigator.of(context).pop(),
           style: TextButton.styleFrom(
             backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
+            foregroundColor: isDark ? Colors.white : Colors.black,
           ),
         ),
         title: const Text('Settings'),
@@ -43,6 +46,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ValueListenableBuilder(
+          //   valueListenable: darkModeConfig,
+          //   builder: (context, value, child) => SwitchListTile.adaptive(
+          //     value: value,
+          //     onChanged: (value) {
+          //       darkModeConfig.value = !darkModeConfig.value;
+          //     },
+          //     title: const Text("Dark mode"),
+          //     subtitle: const Text("Dark mode will help you sleep better"),
+          //   ),
+          // ),
+          SwitchListTile.adaptive(
+            value: ref.watch(settingsProvider).darkMode,
+            onChanged: (value) =>
+                ref.read(settingsProvider.notifier).setDarkMode(value),
+            title: const Text("Dark mode"),
+            subtitle: const Text("toggle dark mode"),
+          ),
           const Divider(),
           ...lists
               .map(

@@ -1,16 +1,17 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
-import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 
-class ActivityTile extends StatelessWidget {
+class ActivityTile extends ConsumerWidget {
   final UserModel userModel;
   const ActivityTile({Key? key, required this.userModel}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final faker = Faker();
     final activity = faker.randomGenerator.element([
       'Mentioned you',
@@ -23,6 +24,8 @@ class ActivityTile extends StatelessWidget {
     final hours = faker.randomGenerator.integer(9, min: 1);
     final payload = faker.lorem.sentence();
     final following = faker.randomGenerator.integer(5, min: 1) == 1;
+
+    final isDark = ref.watch(settingsProvider).darkMode;
 
     return ListTile(
       leading: CircleAvatar(
@@ -59,7 +62,7 @@ class ActivityTile extends StatelessWidget {
           Text(
             payload,
             style: TextStyle(
-              color: isDarkMode(context) ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
           ),
         ],

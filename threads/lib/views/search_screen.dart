@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/gaps.dart';
-import '../utils.dart';
+import '../view_models/settings_view_model.dart';
 import '../view_models/user_view_models.dart';
 import '../widgets/search_tile.dart';
 
@@ -33,7 +33,7 @@ class _DiscoverScreenState extends ConsumerState<SearchScreen> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = isDarkMode(context);
+    final isDark = ref.watch(settingsProvider).darkMode;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
