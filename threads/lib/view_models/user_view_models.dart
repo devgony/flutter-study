@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threads/models/user_model.dart';
 
@@ -13,6 +14,19 @@ class UsersViewModel extends FamilyAsyncNotifier<List<UserModel>, String> {
     _userRepository = ref.read(userRepository);
 
     return _userRepository.searchUsers(arg);
+  }
+
+  Future<void> createUser(
+    UserCredential userCredential,
+  ) async {
+    final UserModel user = UserModel(
+      profileImage: "",
+      uid: userCredential.user!.uid,
+      userName: userCredential.user!.email!,
+      followers: 0,
+    );
+
+    await _userRepository.createUser(user);
   }
 }
 

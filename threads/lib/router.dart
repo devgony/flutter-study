@@ -1,17 +1,41 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:threads/repos/auth_repo.dart';
 import 'package:threads/views/camera_screen.dart';
+import 'package:threads/views/login_screen.dart';
 import 'package:threads/views/main_navigation_screen.dart';
 import 'package:threads/views/privacy_screen.dart';
 import 'package:threads/views/settings_screen.dart';
+import 'package:threads/views/sign_up_screen.dart';
 
 final routerProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: "/",
-    // redirect: (context, state) {
-    //   return "/home";
-    // },
+    initialLocation: "/sign-up",
+    redirect: (context, state) {
+      final isLoggedIn = ref.read(authRepo).isLoggedIn;
+      if (!isLoggedIn) {
+        if (state.matchedLocation != SignUpScreen.routeURL &&
+            state.matchedLocation != LoginScreen.routeURL) {
+          return SignUpScreen.routeURL;
+        }
+      }
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: SignUpScreen.routeURL,
+        name: SignUpScreen.routeName,
+        builder: (context, state) {
+          return const SignUpScreen();
+        },
+      ),
+      GoRoute(
+        path: LoginScreen.routeURL,
+        name: LoginScreen.routeName,
+        builder: (context, state) {
+          return const LoginScreen();
+        },
+      ),
       GoRoute(
         path: "/:tab(|search|activity|profile)",
         name: MainNavigationScreen.routeName,

@@ -24,7 +24,7 @@ class _SearchTileState extends ConsumerState<SearchTile> {
           widget.userModel.profileImage,
         ),
       ),
-      title: Text(widget.userModel.userId),
+      title: Text(widget.userModel.uid),
       // isThreeLine: true,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
