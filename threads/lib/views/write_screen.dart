@@ -3,23 +3,27 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:threads/view_models/thread_view_model.dart';
 import 'package:threads/views/camera_screen.dart';
+import 'package:threads/widgets/image_carousel.dart';
 
 import '../constants/sizes.dart';
 import '../utils.dart';
 
-class WriteScreen extends StatefulWidget {
+class WriteScreen extends ConsumerStatefulWidget {
   const WriteScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<WriteScreen> createState() => _WriteScreenState();
+  ConsumerState<WriteScreen> createState() => _WriteScreenState();
 }
 
-class _WriteScreenState extends State<WriteScreen> {
-  XFile? _picture;
+class _WriteScreenState extends ConsumerState<WriteScreen> {
+  List<XFile>? _picture;
   final _textController = TextEditingController();
   final faker = Faker();
   final profile = getImage();
@@ -124,13 +128,12 @@ class _WriteScreenState extends State<WriteScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: GestureDetector(
                         onTap: () async {
-                          final picture = await Navigator.push(
+                          final List<XFile> picture = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const CameraScreen(),
                             ),
                           );
-
                           setState(() {
                             _picture = picture;
                           });
@@ -145,13 +148,12 @@ class _WriteScreenState extends State<WriteScreen> {
                         ? Expanded(
                             child: Stack(
                               children: [
-                                Image.file(
-                                  File(_picture!.path),
-                                  fit: BoxFit.cover,
+                                ImageCarousel(
+                                  sources: _picture!.map(Source.file).toList(),
                                 ),
                                 Positioned(
                                   top: 5,
-                                  right: 5,
+                                  left: 5,
                                   child: GestureDetector(
                                     onTap: () => setState(() {
                                       _picture = null;
@@ -188,13 +190,25 @@ class _WriteScreenState extends State<WriteScreen> {
                 "Anyone can reply",
                 style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
               ),
-              Text(
-                "Post",
-                style: TextStyle(
-                  color: Colors.blue
-                      .withOpacity(_textController.text.isEmpty ? 0.3 : 1),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: () async {
+                  await ref.read(threadProvider.notifier).uploadThread(
+                        body: _textController.text,
+                        files: _picture != null
+                            ? _picture!.map((e) => File(e.path)).toList()
+                            : null,
+                      );
+
+                  context.pop();
+                },
+                child: Text(
+                  "Post",
+                  style: TextStyle(
+                    color: Colors.blue
+                        .withOpacity(_textController.text.isEmpty ? 0.3 : 1),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               )
             ],

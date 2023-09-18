@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:threads/constants/breakpoints.dart';
 import 'package:threads/views/settings_screen.dart';
-import 'package:threads/widgets/thread.dart';
 
 import '../constants/gaps.dart';
 import '../utils.dart';
@@ -225,14 +224,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         );
                       },
                     ),
-                    ListView.separated(
-                      itemBuilder: (context, index) => const Thread(),
-                      separatorBuilder: (context, index) => Divider(
-                        color: Colors.grey.shade300,
-                        indent: 72,
-                      ),
-                      itemCount: 5,
-                    ),
+                    const SizedBox()
+                    // ListView.separated(
+                    //   itemBuilder: (context, index) => Thread(),
+                    //   separatorBuilder: (context, index) => Divider(
+                    //     color: Colors.grey.shade300,
+                    //     indent: 72,
+                    //   ),
+                    //   itemCount: 5,
+                    // ),
                   ],
                 ),
               ),

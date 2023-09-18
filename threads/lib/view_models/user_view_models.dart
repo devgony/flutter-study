@@ -6,14 +6,16 @@ import 'package:threads/models/user_model.dart';
 
 import '../repos/user_repo.dart';
 
-class UsersViewModel extends FamilyAsyncNotifier<List<UserModel>, String> {
+class UsersViewModel extends AsyncNotifier<void> {
   late final UserRepository _userRepository;
 
   @override
-  Future<List<UserModel>> build(String arg) async {
+  Future<void> build() async {
     _userRepository = ref.read(userRepository);
+  }
 
-    return _userRepository.searchUsers(arg);
+  Future<List<UserModel>> searchUsers(String keyword) async {
+    return _userRepository.searchUsers(keyword);
   }
 
   Future<void> createUser(
@@ -30,7 +32,6 @@ class UsersViewModel extends FamilyAsyncNotifier<List<UserModel>, String> {
   }
 }
 
-final usersProvider =
-    AsyncNotifierProvider.family<UsersViewModel, List<UserModel>, String>(
+final usersProvider = AsyncNotifierProvider<UsersViewModel, void>(
   () => UsersViewModel(),
 );

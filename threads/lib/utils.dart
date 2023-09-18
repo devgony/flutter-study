@@ -27,3 +27,6 @@ void showFirebaseErrorSnack(
     ),
   );
 }
+
+String toImageURL(String imageUrl) =>
+    "https://firebasestorage.googleapis.com/v0/b/threads-henry.appspot.com/o/${imageUrl.substring(1).replaceAll("/", "%2F")}?alt=media";

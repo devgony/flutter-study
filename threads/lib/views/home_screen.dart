@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:threads/view_models/thread_view_model.dart';
 import 'package:threads/widgets/border_white.dart';
 
 import '../constants/gaps.dart';
@@ -70,28 +71,70 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   colorBlendMode: BlendMode.srcIn,
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Stack(
-                      children: [
-                        Column(
-                          children: const [
-                            Thread(),
-                            Gaps.v16,
-                            Divider(
-                              height: 0,
-                              thickness: 1,
+              ref.watch(threadProvider).when(
+                data: (data) {
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return Stack(
+                          children: [
+                            Column(
+                              children: [
+                                Thread(
+                                  thread: data[index],
+                                ),
+                                Gaps.v16,
+                                const Divider(
+                                  height: 0,
+                                  thickness: 1,
+                                ),
+                                Gaps.v16,
+                              ],
                             ),
-                            Gaps.v16,
                           ],
-                        ),
-                      ],
-                    );
-                  },
-                  childCount: 10,
-                ),
-              )
+                        );
+                      },
+                      childCount: data.length,
+                    ),
+                  );
+                },
+                loading: () {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+                error: (e, s) {
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Text("error: ${e.toString()}"),
+                    ),
+                  );
+                },
+              ),
+              // SliverList(
+              //   delegate: SliverChildBuilderDelegate(
+              //     (context, index) {
+              //       return Stack(
+              //         children: [
+              //           Column(
+              //             children: const [
+              //               Thread(),
+              //               Gaps.v16,
+              //               Divider(
+              //                 height: 0,
+              //                 thickness: 1,
+              //               ),
+              //               Gaps.v16,
+              //             ],
+              //           ),
+              //         ],
+              //       );
+              //     },
+              //     childCount: 10,
+              //   ),
+              // )
             ],
           ),
           if (_showModal)

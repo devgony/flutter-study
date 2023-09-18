@@ -333,37 +333,39 @@ class _CameraScreenState extends State<CameraScreen>
                 ],
               ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 18),
-        child: Row(
-          children: [
-            const Expanded(child: SizedBox()),
-            const Expanded(
-              child: Text(
-                'Camera',
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () async {
-                  final picture = await ImagePicker().pickImage(
-                    source: ImageSource.gallery,
-                  );
-
-                  if (picture == null) return;
-
-                  Navigator.of(context).pop(picture);
-                },
-                child: const Text(
-                  'Library',
-                  style: TextStyle(color: Colors.grey),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 18),
+          child: Row(
+            children: [
+              const Expanded(child: SizedBox()),
+              const Expanded(
+                child: Text(
+                  'Camera',
+                  style: TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: GestureDetector(
+                  onTap: () async {
+                    final picture = await ImagePicker().pickMultiImage(
+                        // source: ImageSource.gallery,
+                        );
+
+                    if (picture == null) return;
+
+                    Navigator.of(context).pop(picture);
+                  },
+                  child: const Text(
+                    'Library',
+                    style: TextStyle(color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

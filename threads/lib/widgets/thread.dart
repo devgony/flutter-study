@@ -1,6 +1,7 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:threads/models/thread_model.dart';
 
 import '../constants/gaps.dart';
 import '../constants/sizes.dart';
@@ -9,8 +10,10 @@ import 'image_carousel.dart';
 import 'more.dart';
 
 class Thread extends StatelessWidget {
+  final ThreadModel thread;
   const Thread({
     Key? key,
+    required this.thread,
   }) : super(key: key);
 
   Widget getCircleAvatar(
@@ -77,16 +80,21 @@ class Thread extends StatelessWidget {
   Widget build(BuildContext context) {
     final faker = Faker();
     final random = RandomGenerator(seed: DateTime.now().millisecondsSinceEpoch);
-    final userName = faker.internet.userName();
-    final sentence = faker.lorem.sentence();
+    final userName = thread.authorId;
+    final sentence = thread.body;
     final since = random.integer(60);
     final replies = random.integer(4); // 0~3
     final likes = random.integer(1000);
     final hasImage = random.integer(3) != 0;
 
     final repliers = List.generate(replies, (index) => getImage());
-    final images = List.generate(5, (index) => getImage());
+    // final images = List.generate(5, (index) => getImage());
 
+    final sources = thread.imageUrls?.map(toImageURL).map(Source.url).toList();
+
+    // final String? imageUrl = thread.imageUrl != null
+    //     ? "https://firebasestorage.googleapis.com/v0/b/threads-henry.appspot.com/o/${thread.imageUrl!.substring(1).replaceAll("/", "%2F")}?alt=media"
+    //     : null;
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -185,7 +193,8 @@ class Thread extends StatelessWidget {
                         userName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          // fontSize: 16,
+                          fontSize: 10,
                         ),
                       ),
                       Row(
@@ -209,7 +218,8 @@ class Thread extends StatelessWidget {
                   style: const TextStyle(fontSize: 16),
                 ),
                 Gaps.v8,
-                if (hasImage) ImageCarousel(imageUrls: images),
+                // if (imageUrl != null) Image.network(imageUrl),
+                if (sources != null) ImageCarousel(sources: sources),
                 Gaps.v12,
                 SizedBox(
                   width: 150,

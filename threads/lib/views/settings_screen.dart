@@ -105,7 +105,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     CupertinoDialogAction(
                       onPressed: () {
-                        ref.read(authRepo).signOut();
+                        ref.read(authRepository).signOut();
                         context.go("/login");
                       },
                       isDestructiveAction: true,

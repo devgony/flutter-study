@@ -77,24 +77,48 @@ class ActivityScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       Gaps.v16,
-                      ref.watch(usersProvider("")).when(
-                            data: (data) => Flexible(
+                      FutureBuilder(
+                        future:
+                            ref.watch(usersProvider.notifier).searchUsers(""),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Flexible(
                               child: ListView.separated(
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) => ActivityTile(
-                                  userModel: data[index],
+                                  userModel: snapshot.data![index],
                                 ),
-                                itemCount: data.length,
+                                itemCount: snapshot.data!.length,
                                 separatorBuilder: (context, index) => Divider(
                                   color: Colors.grey.shade300,
                                   indent: 72, // TODO: Fix this
                                 ),
                               ),
-                            ),
-                            loading: () => const CircularProgressIndicator(),
-                            error: (error, stackTrace) =>
-                                Text(error.toString()),
-                          ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text(snapshot.error.toString());
+                          }
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                      // ref.watch(usersProvider.notifier).searchUsers("").when(
+                      //       data: (data) => Flexible(
+                      //         child: ListView.separated(
+                      //           scrollDirection: Axis.vertical,
+                      //           itemBuilder: (context, index) => ActivityTile(
+                      //             userModel: data[index],
+                      //           ),
+                      //           itemCount: data.length,
+                      //           separatorBuilder: (context, index) => Divider(
+                      //             color: Colors.grey.shade300,
+                      //             indent: 72, // TODO: Fix this
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       loading: () => const CircularProgressIndicator(),
+                      //       error: (error, stackTrace) =>
+                      //           Text(error.toString()),
+                      //     ),
                     ],
                   ),
                 ),

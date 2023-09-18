@@ -13,7 +13,7 @@ class LoginViewModel extends AsyncNotifier<void> {
 
   @override
   FutureOr<void> build() {
-    _repository = ref.read(authRepo);
+    _repository = ref.read(authRepository);
   }
 
   Future<void> login({
