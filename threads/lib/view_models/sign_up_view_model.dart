@@ -24,13 +24,12 @@ class SignUpViewModel extends AsyncNotifier<void> {
     required BuildContext context,
   }) async {
     state = const AsyncValue.loading();
-    final userViewModel = ref.read(usersProvider("").notifier);
     state = await AsyncValue.guard(() async {
       final UserCredential userCredential = await _repository.emailSignUp(
         email,
         password,
       );
-      await userViewModel.createUser(userCredential);
+      await ref.read(usersProvider.notifier).createUser(userCredential);
     });
     if (state.hasError) {
       showFirebaseErrorSnack(context, state.error);

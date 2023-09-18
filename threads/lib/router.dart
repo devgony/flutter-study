@@ -10,7 +10,7 @@ import 'package:threads/views/sign_up_screen.dart';
 
 final routerProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: "/sign-up",
+    initialLocation: "/",
     redirect: (context, state) {
       final isLoggedIn = ref.watch(authRepository).isLoggedIn;
       if (!isLoggedIn) {

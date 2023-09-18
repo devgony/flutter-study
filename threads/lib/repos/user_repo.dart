@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -31,6 +32,18 @@ class UserRepository {
         return nameLower.contains(keywordLower);
       },
     ).toList();
+  }
+
+  Future<String> uploadThread(
+    File file,
+    String authorId,
+  ) async {
+    final fileName =
+        "/threads/$authorId/${DateTime.now().millisecondsSinceEpoch.toString()}";
+    final ref = _storage.ref().child(fileName);
+    await ref.putFile(file);
+
+    return fileName;
   }
 }
 

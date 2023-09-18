@@ -2,6 +2,8 @@ import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:threads/widgets/reply_timeline.dart';
+import 'package:threads/models/thread_model.dart';
+import 'package:threads/widgets/source.dart';
 
 import '../constants/gaps.dart';
 import '../utils.dart';
@@ -9,8 +11,10 @@ import 'image_carousel.dart';
 import 'more_bottom_sheet.dart';
 
 class Thread extends StatelessWidget {
+  final ThreadModel thread;
   const Thread({
     Key? key,
+    required this.thread,
   }) : super(key: key);
 
   void _onTapMore(BuildContext context) {
@@ -25,16 +29,16 @@ class Thread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final faker = Faker();
     final random = RandomGenerator(seed: DateTime.now().millisecondsSinceEpoch);
-    final userName = faker.internet.userName();
-    final sentence = faker.lorem.sentence();
+    final userName = thread.authorId;
+    final sentence = thread.body;
     final since = random.integer(60);
     final replies = random.integer(4); // 0~3
     final likes = random.integer(1000);
-    final hasImage = random.integer(3) != 0;
     final repliers = List.generate(replies, (index) => getImage());
-    final images = List.generate(5, (index) => getImage());
+
+    final sources =
+        thread.imageUrls?.map(toImageURL).map(UrlSource.new).toList();
 
     return IntrinsicHeight(
       child: Row(
@@ -61,7 +65,7 @@ class Thread extends StatelessWidget {
                         userName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 10,
                         ),
                       ),
                       Row(
@@ -85,7 +89,7 @@ class Thread extends StatelessWidget {
                   style: const TextStyle(fontSize: 16),
                 ),
                 Gaps.v8,
-                if (hasImage) ImageCarousel(imageUrls: images),
+                if (sources != null) ImageCarousel(sources: sources),
                 Gaps.v12,
                 SizedBox(
                   width: 150,

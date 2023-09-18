@@ -6,6 +6,7 @@ import 'package:threads/views/settings_screen.dart';
 import '../constants/gaps.dart';
 import '../utils.dart';
 import '../view_models/settings_view_model.dart';
+import '../view_models/thread_view_model.dart';
 import '../widgets/persistance_tab_bar.dart';
 import '../widgets/thread.dart';
 
@@ -220,15 +221,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               );
                             },
                           ),
-                          ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => const Thread(),
-                            separatorBuilder: (context, index) => Divider(
-                              color: Colors.grey.shade300,
-                              indent: 72,
-                            ),
-                            itemCount: 5,
-                          ),
+                          ref.watch(threadProvider).when(
+                                data: (data) => ListView.separated(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) => Thread(
+                                    thread: data[index],
+                                  ),
+                                  separatorBuilder: (context, index) => Divider(
+                                    color: Colors.grey.shade300,
+                                    indent: 72,
+                                  ),
+                                  itemCount: data.length,
+                                ),
+                                loading: () {
+                                  return const SliverToBoxAdapter(
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                },
+                                error: (e, s) {
+                                  return SliverToBoxAdapter(
+                                    child: Center(
+                                      child: Text("error: ${e.toString()}"),
+                                    ),
+                                  );
+                                },
+                              ),
                         ],
                       ),
                     ),

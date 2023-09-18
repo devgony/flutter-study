@@ -67,26 +67,30 @@ class ActivityScreen extends ConsumerWidget {
               ),
             ),
             body: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.only(top: 16),
               child: TabBarView(
                 children: [
-                  ref.watch(usersProvider("")).when(
-                        data: (data) => Flexible(
-                          child: ListView.separated(
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) => ActivityTile(
-                              userModel: data[index],
-                            ),
-                            itemCount: data.length,
-                            separatorBuilder: (context, index) => Divider(
-                              color: Colors.grey.shade300,
-                              indent: 72,
-                            ),
+                  FutureBuilder(
+                    future: ref.watch(usersProvider.notifier).searchUsers(""),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.separated(
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) => ActivityTile(
+                            userModel: snapshot.data![index],
                           ),
-                        ),
-                        loading: () => const CircularProgressIndicator(),
-                        error: (error, stackTrace) => Text(error.toString()),
-                      ),
+                          itemCount: snapshot.data!.length,
+                          separatorBuilder: (context, index) => Divider(
+                            color: Colors.grey.shade300,
+                            indent: 72,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
                   const Center(
                     child: Text("Replies"),
                   ),

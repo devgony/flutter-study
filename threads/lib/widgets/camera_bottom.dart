@@ -23,13 +23,11 @@ class CameraBottom extends StatelessWidget {
               child: GestureDetector(
                 onTap: () async {
                   final navigator = Navigator.of(context);
-                  final picture = await ImagePicker().pickImage(
-                    source: ImageSource.gallery,
-                  );
+                  final pictures = await ImagePicker().pickMultiImage();
 
-                  if (picture == null) return;
+                  if (pictures.isEmpty) return;
 
-                  navigator.pop(picture);
+                  navigator.pop(pictures);
                 },
                 child: const Text(
                   'Library',

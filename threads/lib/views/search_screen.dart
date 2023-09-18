@@ -60,23 +60,30 @@ class _DiscoverScreenState extends ConsumerState<SearchScreen> {
               placeholder: "Search",
             ),
             Gaps.v12,
-            ref.watch(usersProvider(_searchController.value.text)).when(
-                  data: (data) => Flexible(
+            FutureBuilder(
+              future: ref
+                  .watch(usersProvider.notifier)
+                  .searchUsers(_searchController.value.text),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Flexible(
                     child: ListView.separated(
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) => SearchTile(
-                        userModel: data[index],
+                        userModel: snapshot.data![index],
                       ),
-                      itemCount: data.length,
+                      itemCount: snapshot.data!.length,
                       separatorBuilder: (context, index) => Divider(
                         color: Colors.grey.shade300,
                         indent: 72,
                       ),
                     ),
-                  ),
-                  loading: () => const CircularProgressIndicator(),
-                  error: (error, stackTrace) => Text(error.toString()),
-                ),
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            ),
           ],
         ),
       ),

@@ -177,7 +177,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         ),
                       ),
                       onPressed: () => context.pushNamed(LoginScreen.routeName),
-                      child:  Text(
+                      child: Text(
                         'Already have an account? Log in.',
                         style: TextStyle(
                           color: isDark ? Colors.white : Colors.black,

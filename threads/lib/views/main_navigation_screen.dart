@@ -47,7 +47,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   _onWriteTap() {
     final isDark = ref.watch(settingsProvider).darkMode;
     showModalBottomSheet(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
       context: context,
       builder: (context) => const WriteScreen(),
       constraints: BoxConstraints(
