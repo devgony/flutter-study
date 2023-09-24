@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "474216978889",
+    "project_id": "final-henry-b849e",
+    "storage_bucket": "final-henry-b849e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474216978889:android:1e21351b57ad101ee07018",
+        "android_client_info": {
+          "package_name": "com.example.final_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjEG97iHWqKOL-NA_QALVvLA66vBZLZdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
