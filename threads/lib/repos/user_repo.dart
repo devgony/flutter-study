@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/user_model.dart';
@@ -16,22 +14,18 @@ class UserRepository {
     await _db.collection("users").doc(user.uid).set(user.toJson());
   }
 
-  Future<List<UserModel>> searchUsers(String keyword) async {
-    final String jsonString = await rootBundle.loadString('assets/users.json');
-    final List<dynamic> jsonData = json.decode(jsonString);
+  Future<List<UserModel>> searchUsers(String userId, String keyword) async {
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection("users")
+        .where("userName", isGreaterThanOrEqualTo: keyword)
+        .where("userName", isLessThanOrEqualTo: '$keyword\uf8ff')
+        .get();
 
-    final data = jsonData.map((json) => UserModel.fromJson(json));
+    final List<UserModel> users =
+        snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
 
-    if (keyword.isEmpty) return data.toList();
-
-    return data.where(
-      (user) {
-        final nameLower = user.uid.toLowerCase();
-        final keywordLower = keyword.toLowerCase();
-
-        return nameLower.contains(keywordLower);
-      },
-    ).toList();
+    return users;
   }
 
   Future<String> uploadThread(

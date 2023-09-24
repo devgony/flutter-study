@@ -2,7 +2,6 @@ import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:threads/models/thread_model.dart';
-
 import '../constants/gaps.dart';
 import '../constants/sizes.dart';
 import '../utils.dart';
