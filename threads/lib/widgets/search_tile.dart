@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:threads/utils.dart';
 
 import '../constants/gaps.dart';
 import '../models/user_model.dart';
@@ -21,7 +22,7 @@ class _SearchTileState extends ConsumerState<SearchTile> {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
-          widget.userModel.profileImage,
+          getImage(),
         ),
       ),
       title: Text(widget.userModel.uid),
