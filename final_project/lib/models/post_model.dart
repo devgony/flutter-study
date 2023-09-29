@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/views/post_screen.dart';
 
 class PostModel {
   final String id;
@@ -26,4 +25,25 @@ class PostModel {
         'emotion': emotion,
         'createdAt': createdAt,
       };
+}
+
+enum Emotion {
+  happy("happy", "😊"),
+  thoughtful("thoughtful", "🤔"),
+  love("love", "😍"),
+  amazed("amazed", "🤩"),
+  laughing("laughing", "😂"),
+  sad("sad", "😢"),
+  angry("angry", "😡"),
+  shocked("shocked", "🤯");
+
+  const Emotion(this.id, this.emoji);
+  final String id;
+  final String emoji;
+
+  factory Emotion.from(String id) {
+    return Emotion.values.firstWhere(
+      (value) => value.id == id,
+    );
+  }
 }

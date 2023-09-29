@@ -6,8 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../constants/gaps.dart';
-
 class HomeScreen extends ConsumerWidget {
   static const routeName = 'home';
   static const routeURL = '/';
@@ -52,57 +50,83 @@ class HomeScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: ref.watch(postProvider).when(
             data: (data) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => Gaps.v24,
-                itemCount: data.length,
-                itemBuilder: (context, index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Delete post?'),
-                            content: const Text(
-                              'Are you sure you want to delete this post?',
+              return ListWheelScrollView(
+                // diameterRatio: 2,
+                itemExtent: 200,
+                children: data
+                    .map(
+                      (post) => FractionallySizedBox(
+                        widthFactor: 1,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image:
+                                  AssetImage('assets/${post.emotion.id}.jpg'),
+                              fit: BoxFit.cover,
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  ref
-                                      .read(postProvider.notifier)
-                                      .deletePost(data[index].id);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Delete'),
-                              ),
+                            border: Border.all(),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Mood: ${post.emotion.emoji}"),
+                              Text(post.payload),
                             ],
                           ),
-                        );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Mood: ${data[index].emotion.emoji}"),
-                            Text(data[index].payload),
-                          ],
                         ),
                       ),
-                    ),
-                    Text(toElapsedString(data[index].createdAt))
-                  ],
-                ),
+                    )
+                    .toList(),
+                // itemBuilder: (context, index) => Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     GestureDetector(
+                //       onLongPress: () {
+                //         showDialog(
+                //           context: context,
+                //           builder: (context) => AlertDialog(
+                //             title: const Text('Delete post?'),
+                //             content: const Text(
+                //               'Are you sure you want to delete this post?',
+                //             ),
+                //             actions: [
+                //               TextButton(
+                //                 onPressed: () => Navigator.pop(context),
+                //                 child: const Text('Cancel'),
+                //               ),
+                //               TextButton(
+                //                 onPressed: () {
+                //                   ref
+                //                       .read(postProvider.notifier)
+                //                       .deletePost(data[index].id);
+                //                   Navigator.pop(context);
+                //                 },
+                //                 child: const Text('Delete'),
+                //               ),
+                //             ],
+                //           ),
+                //         );
+                //       },
+                //       child: Container(
+                //         width: double.infinity,
+                //         padding: const EdgeInsets.symmetric(horizontal: 20),
+                //         decoration: BoxDecoration(
+                //           border: Border.all(),
+                //         ),
+                //         child: Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text("Mood: ${data[index].emotion.emoji}"),
+                //             Text(data[index].payload),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     Text(toElapsedString(data[index].createdAt))
+                //   ],
+                // ),
                 // children: data
                 //     .map(
                 //       (post) => Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/post_model.dart';
 import '../view_models/post_view_model.dart';
 
 class PostScreen extends ConsumerStatefulWidget {
@@ -87,27 +88,6 @@ class _PostScreenState extends ConsumerState<PostScreen> {
           )
         ],
       ),
-    );
-  }
-}
-
-enum Emotion {
-  happy("happy", "😊"),
-  thoughtful("thoughtful", "🤔"),
-  love("love", "😍"),
-  amazed("amazed", "🤩"),
-  laughing("laughing", "😂"),
-  sad("sad", "😢"),
-  angry("angry", "😡"),
-  shocked("shocked", "🤯");
-
-  const Emotion(this.id, this.emoji);
-  final String id;
-  final String emoji;
-
-  factory Emotion.from(String id) {
-    return Emotion.values.firstWhere(
-      (value) => value.id == id,
     );
   }
 }
