@@ -5,16 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/post_model.dart';
-import '../views/post_screen.dart';
 
 class PostRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<void> createPost(String payload, String emotion) async {
+  Future<void> createPost(String payload, String mood) async {
     final post = {
       "payload": payload,
-      "emotion": emotion.toString(),
+      "mood": mood.toString(),
       "createdAt": FieldValue.serverTimestamp(),
     };
     await _db.collection("posts").add(post);
@@ -34,7 +33,7 @@ class PostRepository {
             return PostModel.fromJson({
               "id": doc.id,
               "payload": doc["payload"],
-              "emotion": Emotion.from(doc["emotion"]),
+              "mood": Mood.from(doc["mood"]),
               "createdAt": doc["createdAt"],
             });
           },

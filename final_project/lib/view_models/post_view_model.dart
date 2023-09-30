@@ -9,8 +9,8 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
   // List<PostModel> _posts = [];
   // List<PostModel> get posts => _posts;
 
-  Future<void> createPost(String payload, String emotion) async {
-    await _postRepository.createPost(payload, emotion);
+  Future<void> createPost(String payload, String mood) async {
+    await _postRepository.createPost(payload, mood);
   }
 
   Future<void> deletePost(String id) async {

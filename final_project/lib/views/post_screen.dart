@@ -15,7 +15,7 @@ class PostScreen extends ConsumerStatefulWidget {
 
 class _PostScreenState extends ConsumerState<PostScreen> {
   final _textController = TextEditingController();
-  Emotion? _emotion;
+  Mood? _emotion;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class _PostScreenState extends ConsumerState<PostScreen> {
           const Text("What's on your mind?"),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: Emotion.values
+            children: Mood.values
                 .map(
                   (e) => IconButton(
                     style: ButtonStyle(

@@ -1,40 +1,80 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:ui';
+
+import 'package:final_project/models/post_model.dart';
 import 'package:final_project/repositories/authentication_repository.dart';
 import 'package:final_project/view_models/post_view_model.dart';
+import 'package:final_project/views/mood_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
-class HomeScreen extends ConsumerWidget {
+import '../constants/gaps.dart';
+
+class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = 'home';
   static const routeURL = '/';
   const HomeScreen({Key? key}) : super(key: key);
 
-  String toElapsedString(Timestamp timestamp) {
-    final now = DateTime.now();
-    final createdAt = timestamp.toDate();
-    final difference = now.difference(createdAt);
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
+}
 
-    String elapsed;
-    if (difference.inMinutes < 60) {
-      elapsed = '${difference.inMinutes} minutes';
-    } else if (difference.inHours < 24) {
-      elapsed = '${difference.inHours} hours';
-    } else if (difference.inDays < 7) {
-      elapsed = '${difference.inDays} days';
-    } else {
-      elapsed = DateFormat('yyyy-MM-dd').format(createdAt);
-    }
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final PageController _pageController = PageController(
+    viewportFraction: 0.8,
+  );
 
-    return '$elapsed ago';
+  final ValueNotifier<double> _scroll = ValueNotifier(0.0);
+
+  int _currentPage = 0;
+
+  void _onPageChanged(int newPage) {
+    setState(() {
+      _currentPage = newPage;
+    });
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      if (_pageController.page == null) return;
+      _scroll.value = _pageController.page!;
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    // _scroll.dispose();
+    super.dispose();
+  }
+
+  void _onTap(PostModel postModel) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: MoodDetailScreen(
+              postModel: postModel,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
           IconButton(
             onPressed: () {
@@ -45,124 +85,144 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ref.watch(postProvider).when(
-            data: (data) {
-              return ListWheelScrollView(
-                // diameterRatio: 2,
-                itemExtent: 200,
-                children: data
-                    .map(
-                      (post) => FractionallySizedBox(
-                        widthFactor: 1,
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image:
-                                  AssetImage('assets/${post.emotion.id}.jpg'),
-                              fit: BoxFit.cover,
+      body: ref.watch(postProvider).when(
+        data: (data) {
+          if (data.isEmpty) {
+            return const Center(
+              child: Text("No Posts"),
+            );
+          }
+          return Stack(
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: Container(
+                  key: ValueKey(_currentPage),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        "assets/${data[_currentPage].mood.id}.jpg",
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 20,
+                      sigmaY: 20,
+                    ),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                  ),
+                ),
+              ),
+              PageView.builder(
+                onPageChanged: _onPageChanged,
+                controller: _pageController,
+                itemCount: data.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ValueListenableBuilder(
+                        valueListenable: _scroll,
+                        builder: (context, scroll, child) {
+                          final difference = (scroll - index).abs();
+                          final scale = 1 - (difference * 0.1);
+                          return GestureDetector(
+                            onTap: () => _onTap(data[index]),
+                            child: Hero(
+                              tag: data[index].id,
+                              child: Transform.scale(
+                                scale: scale,
+                                child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  height: 350,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.4),
+                                        blurRadius: 10,
+                                        spreadRadius: 2,
+                                        offset: const Offset(0, 8),
+                                      )
+                                    ],
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        "assets/${data[index].mood.id}.jpg",
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    color: Colors.black.withOpacity(0.2),
+                                    child: Material(
+                                      type: MaterialType.transparency,
+                                      child: Text(
+                                        data[index].payload,
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                            border: Border.all(),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Mood: ${post.emotion.emoji}"),
-                              Text(post.payload),
-                            ],
-                          ),
+                          );
+                        },
+                      ),
+                      Gaps.v12,
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(
+                          right: 10,
+                        ),
+                        child: Text(
+                          textAlign: TextAlign.end,
+                          data[index].elapsedString(),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                    )
-                    .toList(),
-                // itemBuilder: (context, index) => Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     GestureDetector(
-                //       onLongPress: () {
-                //         showDialog(
-                //           context: context,
-                //           builder: (context) => AlertDialog(
-                //             title: const Text('Delete post?'),
-                //             content: const Text(
-                //               'Are you sure you want to delete this post?',
-                //             ),
-                //             actions: [
-                //               TextButton(
-                //                 onPressed: () => Navigator.pop(context),
-                //                 child: const Text('Cancel'),
-                //               ),
-                //               TextButton(
-                //                 onPressed: () {
-                //                   ref
-                //                       .read(postProvider.notifier)
-                //                       .deletePost(data[index].id);
-                //                   Navigator.pop(context);
-                //                 },
-                //                 child: const Text('Delete'),
-                //               ),
-                //             ],
-                //           ),
-                //         );
-                //       },
-                //       child: Container(
-                //         width: double.infinity,
-                //         padding: const EdgeInsets.symmetric(horizontal: 20),
-                //         decoration: BoxDecoration(
-                //           border: Border.all(),
-                //         ),
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text("Mood: ${data[index].emotion.emoji}"),
-                //             Text(data[index].payload),
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //     Text(toElapsedString(data[index].createdAt))
-                //   ],
-                // ),
-                // children: data
-                //     .map(
-                //       (post) => Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Container(
-                //             width: double.infinity,
-                //             padding: const EdgeInsets.symmetric(horizontal: 20),
-                //             decoration: BoxDecoration(
-                //               border: Border.all(),
-                //             ),
-                //             child: Column(
-                //               crossAxisAlignment: CrossAxisAlignment.start,
-                //               children: [
-                //                 Text("Mood: ${post.emotion.emoji}"),
-                //                 Text(post.payload),
-                //               ],
-                //             ),
-                //           ),
-                //           Text(toElapsedString(post.createdAt))
-                //         ],
-                //       ),
-                //     )
-                //     .toList(),
-              );
-            },
-            loading: () {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-            error: (error, stackTrace) {
-              return Text(error.toString());
-            },
-          ),
-        ),
+                      Gaps.v24,
+                      Text(
+                        data[index].mood.emoji,
+                        style: const TextStyle(
+                          fontSize: 48,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        data[index].mood.id.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          );
+        },
+        loading: () {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        error: (error, stackTrace) {
+          return Text(error.toString());
+        },
       ),
     );
   }
