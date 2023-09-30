@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 final routerProvider = Provider(
   (ref) => GoRouter(
-    initialLocation: "/",
+    initialLocation: "/post",
     redirect: (context, state) {
       final isLoggedIn = ref.read(authRepository).isLoggedIn;
       if (!isLoggedIn) {

@@ -79,6 +79,7 @@ class _MoodDetailScreenState extends State<MoodDetailScreen>
             child: Hero(
               tag: widget.postModel.id,
               child: Container(
+                clipBehavior: Clip.hardEdge,
                 height: 350,
                 width: 350,
                 decoration: BoxDecoration(
