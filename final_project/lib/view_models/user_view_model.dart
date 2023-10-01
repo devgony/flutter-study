@@ -7,32 +7,49 @@ import '../models/user_model.dart';
 import '../repositories/authentication_repository.dart';
 import '../repositories/user_repositories.dart';
 
-class UsersViewModel extends AsyncNotifier<void> {
-  late final UserRepository _userRepository;
+class UsersViewModel extends AsyncNotifier<UserModel> {
+  late final UserRepository _usersRepository;
+  late final AuthenticationRepository _authenticationRepository;
 
   @override
-  Future<void> build() async {
-    _userRepository = ref.read(userRepository);
+  FutureOr<UserModel> build() async {
+    _usersRepository = ref.read(userRepository);
+    _authenticationRepository = ref.read(authRepository);
+
+    if (_authenticationRepository.isLoggedIn) {
+      final profile =
+          await _usersRepository.findUser(_authenticationRepository.user!.uid);
+      if (profile != null) {
+        return UserModel.fromJson(profile);
+      }
+    }
+    return UserModel.empty();
   }
 
   Future<List<UserModel>> searchUsers(String keyword) async {
     final userId = ref.read(authRepository).user!.uid;
-    return _userRepository.searchUsers(userId, keyword);
+    return _usersRepository.searchUsers(userId, keyword);
   }
 
   Future<void> createUser(
     UserCredential userCredential,
   ) async {
     final UserModel user = UserModel(
-      // profileImage: "",
       uid: userCredential.user!.uid,
-      userName: userCredential.user!.email!,
+      email: userCredential.user!.email!,
+      hasAvatar: false,
     );
 
-    await _userRepository.createUser(user);
+    await _usersRepository.createUser(user);
+  }
+
+  Future<void> onAvatarUpload() async {
+    if (state.value == null) return;
+    state = AsyncValue.data(state.value!.copyWith());
+    await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
   }
 }
 
-final usersProvider = AsyncNotifierProvider<UsersViewModel, void>(
+final usersProvider = AsyncNotifierProvider<UsersViewModel, UserModel>(
   () => UsersViewModel(),
 );

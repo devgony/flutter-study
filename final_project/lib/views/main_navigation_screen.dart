@@ -1,4 +1,5 @@
 import 'package:final_project/views/post_screen.dart';
+import 'package:final_project/views/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,10 +24,7 @@ class MainNavigationScreen extends ConsumerStatefulWidget {
 }
 
 class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
-  final List<String> _tabs = [
-    "",
-    "post",
-  ];
+  final List<String> _tabs = ["", "post", "profile"];
 
   late int _selectedIndex = _tabs.indexOf(widget.tab);
 
@@ -78,6 +76,12 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
             offstage: _selectedIndex != 1,
             child: const PostScreen(),
           ),
+          Offstage(
+            offstage: _selectedIndex != 2,
+            child: const ProfileScreen(
+              tab: "",
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: Container(
@@ -105,6 +109,14 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
                   icon: FontAwesomeIcons.penToSquare,
                   selectedIcon: FontAwesomeIcons.solidPenToSquare,
                   onTap: () => _onTap(1),
+                  selectedIndex: _selectedIndex,
+                ),
+                NavTab(
+                  text: "Profie",
+                  isSelected: _selectedIndex == 2,
+                  icon: FontAwesomeIcons.user,
+                  selectedIcon: FontAwesomeIcons.solidUser,
+                  onTap: () => _onTap(2),
                   selectedIndex: _selectedIndex,
                 ),
               ],

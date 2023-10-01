@@ -10,8 +10,18 @@ class UserRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  updateUser(String userId, Map<String, dynamic> data) async {
+    await _db.collection("users").doc(userId).update(data);
+  }
+
   Future<void> createUser(UserModel user) async {
     await _db.collection("users").doc(user.uid).set(user.toJson());
+  }
+
+  findUser(String userId) async {
+    final DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _db.collection("users").doc(userId).get();
+    return snapshot.data();
   }
 
   Future<List<UserModel>> searchUsers(String userId, String keyword) async {
@@ -38,6 +48,11 @@ class UserRepository {
     await ref.putFile(file);
 
     return fileName;
+  }
+
+  Future<void> uploadAvatar(File file, String fileName) async {
+    final fileRef = _storage.ref().child("avatars/$fileName");
+    await fileRef.putFile(file);
   }
 }
 
