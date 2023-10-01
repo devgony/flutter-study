@@ -1,3 +1,5 @@
+import 'package:final_project/view_models/post_view_model.dart';
+import 'package:final_project/views/mood_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -121,81 +123,94 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       },
                       body: TabBarView(
                         children: [
-                          GridView.builder(
-                            itemCount: 20,
-                            padding: EdgeInsets.zero,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: width < Breakpoints.md ? 3 : 5,
-                              crossAxisSpacing: Sizes.size2,
-                              mainAxisSpacing: Sizes.size2,
-                              childAspectRatio: 9 / 14,
-                            ),
-                            itemBuilder: (context, index) => Column(
-                              children: [
-                                Stack(
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 9 / 14,
-                                      child: FadeInImage.assetNetwork(
-                                        fit: BoxFit.cover,
-                                        placeholder: "assets/placeholder.jpg",
-                                        image:
-                                            "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+                          ref.watch(postProvider).when(
+                                data: (
+                                  data,
+                                ) =>
+                                    GridView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: data.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: Sizes.size2,
+                                    mainAxisSpacing: Sizes.size2,
+                                    childAspectRatio: 9 / 14,
+                                  ),
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => MoodDetailScreen(
+                                          postModel: data[index],
+                                        ),
                                       ),
                                     ),
-                                    index == 0
-                                        ? Positioned(
-                                            top: Sizes.size4,
-                                            left: Sizes.size4,
+                                    child: Stack(
+                                      children: [
+                                        AspectRatio(
+                                          aspectRatio: 9 / 14,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  "assets/${data[index].mood.id}.jpg",
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
                                             child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: Sizes.size4,
-                                                vertical: Sizes.size2,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(Sizes.size3),
+                                              alignment: Alignment.center,
+                                              width: double.infinity,
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              child: Material(
+                                                type: MaterialType.transparency,
+                                                child: Text(
+                                                  data[index].payload,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               ),
-                                              child: const Text(
-                                                "Pinned",
-                                                style: TextStyle(
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 5,
+                                          width: width / 3,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(data[index].mood.emoji),
+                                              Text(
+                                                data[index].yearMonthDay(),
+                                                style: const TextStyle(
                                                   color: Colors.white,
+                                                  fontSize: 12,
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                        : Container(),
-                                    Positioned(
-                                      bottom: Sizes.size4,
-                                      left: Sizes.size4,
-                                      child: Row(
-                                        children: const [
-                                          FaIcon(
-                                            FontAwesomeIcons.circlePlay,
-                                            size: Sizes.size20,
-                                            color: Colors.white,
+                                            ],
                                           ),
-                                          Gaps.h8,
-                                          Text(
-                                            "4.1M",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
+                                error: (
+                                  error,
+                                  stackTrace,
+                                ) =>
+                                    Center(
+                                  child: Text(error.toString()),
+                                ),
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                ),
+                              ),
                           const Center(
                             child: Text('Page two'),
                           ),

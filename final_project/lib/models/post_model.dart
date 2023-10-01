@@ -45,6 +45,11 @@ class PostModel {
 
     return '$elapsed ago';
   }
+
+  String yearMonthDay() {
+    final createdAt = this.createdAt.toDate();
+    return DateFormat('yyyy-MM-dd').format(createdAt);
+  }
 }
 
 enum Mood {
