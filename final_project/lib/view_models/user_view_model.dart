@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../repositories/authentication_repository.dart';
 import '../repositories/user_repositories.dart';
@@ -20,7 +21,12 @@ class UsersViewModel extends AsyncNotifier<UserModel> {
       final profile =
           await _usersRepository.findUser(_authenticationRepository.user!.uid);
       if (profile != null) {
-        return UserModel.fromJson(profile);
+        final List<String> likedPosts = List.castFrom<dynamic, String>(
+          profile["likedPosts"],
+        );
+        return UserModel.fromJson(
+          {...profile, "likedPosts": likedPosts},
+        );
       }
     }
     return UserModel.empty();
@@ -45,9 +51,12 @@ class UsersViewModel extends AsyncNotifier<UserModel> {
 
   Future<void> onAvatarUpload() async {
     if (state.value == null) return;
-    state = AsyncValue.data(state.value!.copyWith());
+    state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
     await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
   }
+
+  Future<List<PostModel>> likedPosts() =>
+      _usersRepository.likedPosts(_authenticationRepository.user!.uid);
 }
 
 final usersProvider = AsyncNotifierProvider<UsersViewModel, UserModel>(

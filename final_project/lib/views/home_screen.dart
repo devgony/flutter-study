@@ -6,6 +6,7 @@ import 'package:final_project/view_models/post_view_model.dart';
 import 'package:final_project/views/mood_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/gaps.dart';
@@ -179,15 +180,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         },
                       ),
                       Gaps.v12,
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(
-                          right: 10,
-                        ),
-                        child: Text(
-                          textAlign: TextAlign.end,
-                          data[index].elapsedString(),
-                          style: const TextStyle(color: Colors.white),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                final notifier =
+                                    ref.read(postProvider.notifier);
+                                data[index].liked
+                                    ? notifier.dislikePost(
+                                        data[index].id,
+                                      )
+                                    : notifier.likePost(
+                                        data[index].id,
+                                      );
+                              },
+                              child: FaIcon(
+                                data[index].liked
+                                    ? FontAwesomeIcons.solidHeart
+                                    : FontAwesomeIcons.heart,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              textAlign: TextAlign.end,
+                              data[index].elapsedString(),
+                              style: const TextStyle(color: Colors.white),
+                            )
+                          ],
                         ),
                       ),
                       Gaps.v24,

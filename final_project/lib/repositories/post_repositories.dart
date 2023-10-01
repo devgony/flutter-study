@@ -10,11 +10,39 @@ class PostRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  dislikePost(String id, String userId) async {
+    _db.collection("posts").doc(id).update({
+      "likes": FieldValue.increment(-1),
+      "likedUsers": FieldValue.arrayRemove([userId]),
+    });
+
+    await _db.collection("users").doc(userId).update(
+      {
+        "likedPosts": FieldValue.arrayRemove([id]),
+      },
+    );
+  }
+
+  likePost(String id, String userId) async {
+    _db.collection("posts").doc(id).update({
+      "likes": FieldValue.increment(1),
+      "likedUsers": FieldValue.arrayUnion([userId]),
+    });
+
+    await _db.collection("users").doc(userId).update(
+      {
+        "likedPosts": FieldValue.arrayUnion([id]),
+      },
+    );
+  }
+
   Future<void> createPost(String payload, String mood) async {
     final post = {
       "payload": payload,
       "mood": mood.toString(),
       "createdAt": FieldValue.serverTimestamp(),
+      "likes": 0,
+      "likedUsers": [],
     };
     await _db.collection("posts").add(post);
   }
@@ -23,21 +51,16 @@ class PostRepository {
     await _db.collection("posts").doc(id).delete();
   }
 
-  Stream<List<PostModel>> getPosts() => _db
+  Stream<List<PostModel>> getPosts(String userId) => _db
       .collection("posts")
       .orderBy("createdAt", descending: true)
       .snapshots()
       .map(
-        (event) => event.docs.map(
-          (doc) {
-            return PostModel.fromJson({
-              "id": doc.id,
-              "payload": doc["payload"],
-              "mood": Mood.from(doc["mood"]),
-              "createdAt": doc["createdAt"],
-            });
-          },
-        ).toList(),
+        (event) => event.docs
+            .map(
+              (doc) => fromSnapshotToPostModel(doc, userId),
+            )
+            .toList(),
       );
 
   // Future<List<PostModel>> searchPosts(String PostId, String keyword) async {

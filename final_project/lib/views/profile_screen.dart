@@ -1,11 +1,12 @@
 import 'package:final_project/view_models/post_view_model.dart';
-import 'package:final_project/views/mood_detail_screen.dart';
+import 'package:final_project/widgets/grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../constants/breakpoints.dart';
+import '../models/post_model.dart';
 import '../view_models/user_view_model.dart';
 import '../widgets/avatar.dart';
 import '../widgets/persistance_tab_bar.dart';
@@ -127,79 +128,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 data: (
                                   data,
                                 ) =>
-                                    GridView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: data.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: Sizes.size2,
-                                    mainAxisSpacing: Sizes.size2,
-                                    childAspectRatio: 9 / 14,
-                                  ),
-                                  itemBuilder: (context, index) =>
-                                      GestureDetector(
-                                    onTap: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => MoodDetailScreen(
-                                          postModel: data[index],
-                                        ),
-                                      ),
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        AspectRatio(
-                                          aspectRatio: 9 / 14,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                  "assets/${data[index].mood.id}.jpg",
-                                                ),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              width: double.infinity,
-                                              color:
-                                                  Colors.black.withOpacity(0.2),
-                                              child: Material(
-                                                type: MaterialType.transparency,
-                                                child: Text(
-                                                  data[index].payload,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 5,
-                                          width: width / 3,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(data[index].mood.emoji),
-                                              Text(
-                                                data[index].yearMonthDay(),
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                    GridViewPosts(data: data, width: width / 3),
                                 error: (
                                   error,
                                   stackTrace,
@@ -211,8 +140,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   child: CircularProgressIndicator.adaptive(),
                                 ),
                               ),
-                          const Center(
-                            child: Text('Page two'),
+                          FutureBuilder(
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text(snapshot.error.toString()),
+                                );
+                              }
+                              if (snapshot.hasData) {
+                                final data = snapshot.data as List<PostModel>;
+                                return GridViewPosts(
+                                  data: data,
+                                  width: width / 3,
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              );
+                            },
+                            future:
+                                ref.watch(usersProvider.notifier).likedPosts(),
                           ),
                         ],
                       ),

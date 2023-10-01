@@ -6,25 +6,29 @@ class PostModel {
   final String payload;
   final Mood mood;
   final Timestamp createdAt;
+  final bool liked;
 
   PostModel({
     required this.id,
     required this.payload,
     required this.mood,
     required this.createdAt,
+    this.liked = false,
   });
 
   PostModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         payload = json['payload'],
         mood = json['mood'],
-        createdAt = json['createdAt'];
+        createdAt = json['createdAt'],
+        liked = json['liked'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'payload': payload,
         'mood': mood,
         'createdAt': createdAt,
+        'liked': liked,
       };
 
   String elapsedString() {
@@ -71,4 +75,16 @@ enum Mood {
       (value) => value.id == id,
     );
   }
+}
+
+PostModel fromSnapshotToPostModel(
+  DocumentSnapshot<Map<String, dynamic>> snapshot,
+  String userId,
+) {
+  final doc = snapshot.data() ?? {};
+  final liked = doc["likedUsers"].contains(userId);
+
+  return PostModel.fromJson(
+    {...doc, "mood": Mood.from(doc["mood"]), "id": snapshot.id, "liked": liked},
+  );
 }

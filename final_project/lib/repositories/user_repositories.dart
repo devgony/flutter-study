@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/models/post_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,6 +10,20 @@ import '../models/user_model.dart';
 class UserRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future<List<PostModel>> likedPosts(String userId) async {
+    final DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _db.collection("users").doc(userId).get();
+    final iterable = List.castFrom<dynamic, String>(snapshot.get("likedPosts"))
+        .map((postId) async {
+      final snapshot = await _db.collection("posts").doc(postId).get();
+
+      return fromSnapshotToPostModel(snapshot, userId);
+    });
+    final posts = await Future.wait(iterable);
+
+    return posts;
+  }
 
   updateUser(String userId, Map<String, dynamic> data) async {
     await _db.collection("users").doc(userId).update(data);

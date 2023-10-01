@@ -1,10 +1,13 @@
 import 'package:final_project/models/post_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../repositories/authentication_repository.dart';
 import '../repositories/post_repositories.dart';
 
 class PostViewModel extends StreamNotifier<List<PostModel>> {
   final PostRepository _postRepository = PostRepository();
+  AuthenticationRepository _authenticationRepository =
+      AuthenticationRepository();
 
   // List<PostModel> _posts = [];
   // List<PostModel> get posts => _posts;
@@ -18,12 +21,21 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
   }
 
   Stream<List<PostModel>> getPosts() {
-    return _postRepository.getPosts();
+    return _postRepository.getPosts(_authenticationRepository.user!.uid);
+  }
+
+  likePost(String id) {
+    _postRepository.likePost(id, _authenticationRepository.user!.uid);
+  }
+
+  dislikePost(String id) {
+    _postRepository.dislikePost(id, _authenticationRepository.user!.uid);
   }
 
   @override
   Stream<List<PostModel>> build() {
-    return _postRepository.getPosts();
+    _authenticationRepository = ref.read(authRepository);
+    return getPosts();
   }
 
   // Future<void> searchPosts(String PostId, String keyword) async {
