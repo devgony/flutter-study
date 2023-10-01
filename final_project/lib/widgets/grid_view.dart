@@ -29,7 +29,7 @@ class GridViewPosts extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => MoodDetailScreen(
-                postModel: data[index],
+                post: data[index],
               ),
             ),
           ),

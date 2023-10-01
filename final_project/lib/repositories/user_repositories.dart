@@ -14,13 +14,17 @@ class UserRepository {
   Future<List<PostModel>> likedPosts(String userId) async {
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("users").doc(userId).get();
-    final iterable = List.castFrom<dynamic, String>(snapshot.get("likedPosts"))
-        .map((postId) async {
+    final iterable = Stream.fromIterable(
+      List.castFrom<dynamic, String>(snapshot.get("likedPosts")),
+    ).asyncExpand((postId) async* {
       final snapshot = await _db.collection("posts").doc(postId).get();
 
-      return fromSnapshotToPostModel(snapshot, userId);
+      final post = fromSnapshotToPostModel(snapshot, userId);
+      if (post != null) {
+        yield post;
+      }
     });
-    final posts = await Future.wait(iterable);
+    final posts = await iterable.toList();
 
     return posts;
   }

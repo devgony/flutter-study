@@ -1,13 +1,12 @@
 import 'dart:ui';
 
 import 'package:final_project/models/post_model.dart';
-import 'package:final_project/repositories/authentication_repository.dart';
 import 'package:final_project/view_models/post_view_model.dart';
 import 'package:final_project/views/mood_detail_screen.dart';
+import 'package:final_project/widgets/avatar.dart';
+import 'package:final_project/widgets/post_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 
 import '../constants/gaps.dart';
 
@@ -51,7 +50,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.dispose();
   }
 
-  void _onTap(PostModel postModel) {
+  void _onTap(
+    PostModel post,
+  ) {
     Navigator.push(
       context,
       PageRouteBuilder(
@@ -59,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           return FadeTransition(
             opacity: animation,
             child: MoodDetailScreen(
-              postModel: postModel,
+              post: post,
             ),
           );
         },
@@ -72,20 +73,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     BuildContext context,
   ) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              ref.read(authRepository).signOut();
-              context.go("/");
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Home Screen'),
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () {
+      //         ref.read(authRepository).signOut();
+      //         context.go("/");
+      //       },
+      //       icon: const Icon(Icons.logout),
+      //     ),
+      //   ],
+      // ),
       body: ref.watch(postProvider).when(
         data: (data) {
           if (data.isEmpty) {
@@ -124,18 +125,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 itemCount: data.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
+                  final post = data[index];
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Row(
+                        children: [
+                          Avatar(
+                            email: post.creatorEmail,
+                            uid: post.creatorId,
+                            size: 20,
+                          ),
+                          Gaps.h12,
+                          Text(
+                            post.creatorEmail,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gaps.v12,
                       ValueListenableBuilder(
                         valueListenable: _scroll,
                         builder: (context, scroll, child) {
                           final difference = (scroll - index).abs();
                           final scale = 1 - (difference * 0.1);
                           return GestureDetector(
-                            onTap: () => _onTap(data[index]),
+                            onTap: () => _onTap(post),
                             child: Hero(
-                              tag: data[index].id,
+                              tag: post.id,
                               child: Transform.scale(
                                 scale: scale,
                                 child: Container(
@@ -153,7 +173,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ],
                                     image: DecorationImage(
                                       image: AssetImage(
-                                        "assets/${data[index].mood.id}.jpg",
+                                        "assets/${post.mood.id}.jpg",
                                       ),
                                       fit: BoxFit.cover,
                                     ),
@@ -165,7 +185,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     child: Material(
                                       type: MaterialType.transparency,
                                       child: Text(
-                                        data[index].payload,
+                                        post.payload,
                                         style: const TextStyle(
                                           fontSize: 24,
                                           color: Colors.white,
@@ -182,60 +202,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       Gaps.v12,
                       Padding(
                         padding: const EdgeInsets.only(right: 12.0, left: 6),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        final notifier =
-                                            ref.read(postProvider.notifier);
-                                        data[index].liked
-                                            ? notifier.dislikePost(
-                                                data[index].id,
-                                              )
-                                            : notifier.likePost(
-                                                data[index].id,
-                                              );
-                                      },
-                                      child: FaIcon(
-                                        data[index].liked
-                                            ? FontAwesomeIcons.solidHeart
-                                            : FontAwesomeIcons.heart,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Gaps.h12,
-                                    InkWell(
-                                      onTap: () {},
-                                      child: const FaIcon(
-                                        FontAwesomeIcons.comment,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  textAlign: TextAlign.end,
-                                  data[index].elapsedString(),
-                                  style: const TextStyle(color: Colors.white),
-                                )
-                              ],
-                            ),
-                            Text(
-                              "${data[index].likes} Likes",
-                              style: const TextStyle(color: Colors.white),
-                            )
-                          ],
+                        child: PostBottomBar(
+                          post: post,
                         ),
                       ),
                       Gaps.v24,
                       Text(
-                        data[index].mood.emoji,
+                        post.mood.emoji,
                         style: const TextStyle(
                           fontSize: 48,
                           color: Colors.white,
@@ -245,7 +218,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         height: 5,
                       ),
                       Text(
-                        data[index].mood.id.toUpperCase(),
+                        post.mood.id.toUpperCase(),
                         style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -264,6 +237,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
         },
         error: (error, stackTrace) {
+          print(stackTrace.toString());
           return Text(error.toString());
         },
       ),

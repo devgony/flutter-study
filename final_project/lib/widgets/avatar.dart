@@ -10,14 +10,14 @@ const projectName = "final-henry-b849e";
 
 class Avatar extends ConsumerWidget {
   final String email;
-  final bool hasAvatar;
   final String uid;
+  final double size;
 
   const Avatar({
     super.key,
     required this.email,
     required this.uid,
-    required this.hasAvatar,
+    this.size = 50.0,
   });
 
   Future<void> _onAvatarTap(WidgetRef ref) async {
@@ -40,8 +40,8 @@ class Avatar extends ConsumerWidget {
       onTap: isLoading ? null : () => _onAvatarTap(ref),
       child: isLoading
           ? Container(
-              width: 50,
-              height: 50,
+              width: size,
+              height: size,
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
@@ -49,13 +49,14 @@ class Avatar extends ConsumerWidget {
               child: const CircularProgressIndicator(),
             )
           : CircleAvatar(
-              radius: 50,
-              foregroundImage: hasAvatar
-                  ? NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/$projectName.appspot.com/o/avatars%2F$uid?alt=media&haha=${DateTime.now().toString()}",
-                    )
-                  : null,
-              child: Text(email),
+              radius: size,
+              foregroundImage: Image.network(
+                "https://firebasestorage.googleapis.com/v0/b/$projectName.appspot.com/o/avatars%2F$uid?alt=media&haha=${DateTime.now().toString()}",
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.error),
+              ).image,
+              child: Text(email.substring(0, 1),
+                  style: const TextStyle(fontSize: 10)),
             ),
     );
   }

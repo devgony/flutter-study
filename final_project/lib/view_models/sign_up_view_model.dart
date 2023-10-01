@@ -34,7 +34,6 @@ class SignUpViewModel extends AsyncNotifier<void> {
     });
     if (state.hasError) {
       showFirebaseErrorSnack(context, state.error);
-      print(state);
     } else {
       context.go(HomeScreen.routeURL);
     }

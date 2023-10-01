@@ -137,7 +137,7 @@ class _PostScreenState extends ConsumerState<PostScreen> {
               _textController.clear();
               _mood = Mood.love;
 
-              context.go(HomeScreen.routeName);
+              context.go(HomeScreen.routeURL);
             },
             child: const Text("Post"),
           )

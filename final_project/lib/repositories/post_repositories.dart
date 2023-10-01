@@ -4,11 +4,62 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/comment_model.dart';
 import '../models/post_model.dart';
 
 class PostRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Stream<List<CommentModel>> subscribeComments(String postId) => _db
+      .collection("posts")
+      .doc(postId)
+      .collection("comments")
+      .orderBy("createdAt", descending: true)
+      .snapshots()
+      .map(
+        (event) => event.docs
+            .map(
+              (doc) => CommentModel.fromJson({...doc.data(), "id": doc.id}),
+            )
+            .toList(),
+      );
+
+  Future<void> addComment(
+    String id,
+    String payload,
+    String uid,
+    String email,
+  ) async {
+    final commentData = {
+      "payload": payload,
+      "createdAt": FieldValue.serverTimestamp(),
+      "creatorId": uid,
+      "creatorEmail": email,
+    };
+
+    await _db
+        .collection("posts")
+        .doc(id)
+        .collection("comments")
+        .add(commentData);
+
+    await _db.collection("posts").doc(id).update(
+      {
+        "commentCount": FieldValue.increment(1),
+      },
+    );
+  }
+
+  Stream<PostModel> subscribePost(String userId, String postId) => _db
+      .collection("posts")
+      .doc(postId)
+      .snapshots()
+      .map(
+        (event) => fromSnapshotToPostModel(event, userId),
+      )
+      .where((x) => x != null)
+      .map((e) => e!);
 
   dislikePost(String id, String userId) async {
     _db.collection("posts").doc(id).update({
@@ -36,13 +87,21 @@ class PostRepository {
     );
   }
 
-  Future<void> createPost(String payload, String mood) async {
+  Future<void> createPost({
+    required String payload,
+    required String mood,
+    required String uid,
+    required String email,
+  }) async {
     final post = {
       "payload": payload,
       "mood": mood.toString(),
       "createdAt": FieldValue.serverTimestamp(),
       "likes": 0,
       "likedUsers": [],
+      "creatorEmail": email,
+      "creatorId": uid,
+      "commentCount": 0,
     };
     await _db.collection("posts").add(post);
   }
@@ -58,8 +117,12 @@ class PostRepository {
       .map(
         (event) => event.docs
             .map(
-              (doc) => fromSnapshotToPostModel(doc, userId),
+              (doc) {
+                return fromSnapshotToPostModel(doc, userId);
+              },
             )
+            .where((x) => x != null)
+            .map((e) => e!)
             .toList(),
       );
 

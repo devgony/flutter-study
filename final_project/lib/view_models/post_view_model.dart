@@ -12,8 +12,17 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
   // List<PostModel> _posts = [];
   // List<PostModel> get posts => _posts;
 
+  subscribeComments(String postId) {
+    return _postRepository.subscribeComments(postId);
+  }
+
   Future<void> createPost(String payload, String mood) async {
-    await _postRepository.createPost(payload, mood);
+    await _postRepository.createPost(
+      payload: payload,
+      mood: mood,
+      uid: _authenticationRepository.user!.uid,
+      email: _authenticationRepository.user!.email!,
+    );
   }
 
   Future<void> deletePost(String id) async {
@@ -24,12 +33,28 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
     return _postRepository.getPosts(_authenticationRepository.user!.uid);
   }
 
+  Stream<PostModel> subscribePost(String postId) {
+    return _postRepository.subscribePost(
+      _authenticationRepository.user!.uid,
+      postId,
+    );
+  }
+
   likePost(String id) {
     _postRepository.likePost(id, _authenticationRepository.user!.uid);
   }
 
   dislikePost(String id) {
     _postRepository.dislikePost(id, _authenticationRepository.user!.uid);
+  }
+
+  addComment(String id, String payload) {
+    _postRepository.addComment(
+      id,
+      payload,
+      _authenticationRepository.user!.uid,
+      _authenticationRepository.user!.email!,
+    );
   }
 
   @override

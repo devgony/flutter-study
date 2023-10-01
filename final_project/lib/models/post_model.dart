@@ -8,6 +8,9 @@ class PostModel {
   final Timestamp createdAt;
   final bool liked;
   final int likes;
+  final int commentCount;
+  final String creatorEmail;
+  final String creatorId;
 
   PostModel({
     required this.id,
@@ -16,6 +19,9 @@ class PostModel {
     required this.createdAt,
     this.liked = false,
     required this.likes,
+    required this.creatorEmail,
+    required this.creatorId,
+    required this.commentCount,
   });
 
   PostModel.fromJson(Map<String, dynamic> json)
@@ -24,6 +30,9 @@ class PostModel {
         mood = json['mood'],
         createdAt = json['createdAt'],
         liked = json['liked'],
+        creatorEmail = json['creatorEmail'],
+        creatorId = json['creatorId'],
+        commentCount = json['commentCount'],
         likes = json['likes'];
 
   Map<String, dynamic> toJson() => {
@@ -31,8 +40,11 @@ class PostModel {
         'payload': payload,
         'mood': mood,
         'createdAt': createdAt,
+        'creatorEmail': creatorEmail,
+        'creatorId': creatorId,
         'liked': liked,
         'likes': likes,
+        'commentCount': commentCount,
       };
 
   String elapsedString() {
@@ -81,11 +93,15 @@ enum Mood {
   }
 }
 
-PostModel fromSnapshotToPostModel(
+PostModel? fromSnapshotToPostModel(
   DocumentSnapshot<Map<String, dynamic>> snapshot,
   String userId,
 ) {
-  final doc = snapshot.data() ?? {};
+  final doc = snapshot.data();
+  if (doc == null || doc["mood"] == null || doc["likedUsers"] == null) {
+    return null;
+  }
+
   final liked = doc["likedUsers"].contains(userId);
 
   return PostModel.fromJson(

@@ -17,3 +17,6 @@ void showFirebaseErrorSnack(
     ),
   );
 }
+
+double getScreenHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height;
