@@ -45,12 +45,14 @@ class PostRepository {
     String payload,
     String uid,
     String email,
+    bool hasAvatar,
   ) async {
     final commentData = {
       "payload": payload,
       "createdAt": FieldValue.serverTimestamp(),
       "creatorId": uid,
       "creatorEmail": email,
+      "hasAvatar": hasAvatar,
     };
 
     await _db

@@ -36,6 +36,9 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
   }
 
   Stream<List<PostModel>> subscribeMyPosts() {
+    if (_authenticationRepository.user == null) {
+      return const Stream.empty();
+    }
     return _postRepository
         .subscribeMyPosts(_authenticationRepository.user!.uid);
   }
@@ -55,12 +58,14 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
     _postRepository.dislikePost(id, _authenticationRepository.user!.uid);
   }
 
-  addComment(String id, String payload) {
+  addComment(String id, String payload) async {
+    final hasAvatar = (await _authenticationRepository.me()).hasAvatar;
     _postRepository.addComment(
       id,
       payload,
       _authenticationRepository.user!.uid,
       _authenticationRepository.user!.email!,
+      hasAvatar,
     );
   }
 

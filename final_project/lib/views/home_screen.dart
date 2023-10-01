@@ -143,7 +143,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           Text(
                             post.creatorEmail,
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),

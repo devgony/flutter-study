@@ -1,3 +1,4 @@
+import 'package:final_project/utils.dart';
 import 'package:final_project/widgets/fire.dart';
 import 'package:final_project/widgets/post_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,8 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                 Text(
                   post.creatorEmail,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
@@ -220,6 +222,18 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                             ),
                             title: Text(comment.creatorEmail),
                             subtitle: Text(comment.payload),
+                            trailing: Container(
+                              margin: const EdgeInsets.only(
+                                right: 12.0,
+                              ),
+                              child: Text(
+                                elapsedString(comment.createdAt),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
                           );
                         },
                       ),

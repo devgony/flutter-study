@@ -51,25 +51,6 @@ class PostModel {
         'commentCount': commentCount,
       };
 
-  String elapsedString() {
-    final now = DateTime.now();
-    final createdAt = this.createdAt.toDate();
-    final difference = now.difference(createdAt);
-
-    String elapsed;
-    if (difference.inMinutes < 60) {
-      elapsed = '${difference.inMinutes} minutes';
-    } else if (difference.inHours < 24) {
-      elapsed = '${difference.inHours} hours';
-    } else if (difference.inDays < 7) {
-      elapsed = '${difference.inDays} days';
-    } else {
-      elapsed = DateFormat('yyyy-MM-dd').format(createdAt);
-    }
-
-    return '$elapsed ago';
-  }
-
   String yearMonthDay() {
     final createdAt = this.createdAt.toDate();
     return DateFormat('yyyy-MM-dd').format(createdAt);

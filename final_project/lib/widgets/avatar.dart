@@ -12,7 +12,8 @@ class Avatar extends ConsumerWidget {
   final String email;
   final String uid;
   final double size;
-  final hasAvatar;
+  final bool hasAvatar;
+  final bool caching;
 
   const Avatar({
     super.key,
@@ -20,6 +21,7 @@ class Avatar extends ConsumerWidget {
     required this.uid,
     required this.hasAvatar,
     this.size = 50.0,
+    this.caching = true,
   });
 
   Future<void> _onAvatarTap(WidgetRef ref) async {
@@ -54,7 +56,7 @@ class Avatar extends ConsumerWidget {
               radius: size,
               foregroundImage: hasAvatar
                   ? NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/$projectName.appspot.com/o/avatars%2F$uid?alt=media&haha=${DateTime.now().toString()}",
+                      "https://firebasestorage.googleapis.com/v0/b/$projectName.appspot.com/o/avatars%2F$uid?alt=media${caching ? "" : "&haha=${DateTime.now().toString()}"}",
                     )
                   : null,
               child: Text(

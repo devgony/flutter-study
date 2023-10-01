@@ -55,8 +55,12 @@ class UsersViewModel extends AsyncNotifier<UserModel> {
     await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
   }
 
-  Future<List<PostModel>> likedPosts() =>
-      _usersRepository.likedPosts(_authenticationRepository.user!.uid);
+  Future<List<PostModel>> likedPosts() {
+    if (_authenticationRepository.user == null) {
+      return Future.value([]);
+    }
+    return _usersRepository.likedPosts(_authenticationRepository.user!.uid);
+  }
 }
 
 final usersProvider = AsyncNotifierProvider<UsersViewModel, UserModel>(

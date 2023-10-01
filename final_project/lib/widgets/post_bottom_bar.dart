@@ -74,7 +74,7 @@ class PostBottomBar extends ConsumerWidget {
                   ),
                 ),
                 Gaps.h12,
-                post.creatorId == ref.read(authRepository).user!.uid
+                post.creatorId == ref.read(authRepository).user?.uid
                     ? InkWell(
                         onTap: () {
                           showCupertinoDialog(
@@ -115,7 +115,7 @@ class PostBottomBar extends ConsumerWidget {
             ),
             Text(
               textAlign: TextAlign.end,
-              post.elapsedString(),
+              elapsedString(post.createdAt),
               style: TextStyle(color: color),
             )
           ],
