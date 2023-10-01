@@ -7,6 +7,7 @@ class PostModel {
   final Mood mood;
   final Timestamp createdAt;
   final bool liked;
+  final int likes;
 
   PostModel({
     required this.id,
@@ -14,6 +15,7 @@ class PostModel {
     required this.mood,
     required this.createdAt,
     this.liked = false,
+    required this.likes,
   });
 
   PostModel.fromJson(Map<String, dynamic> json)
@@ -21,7 +23,8 @@ class PostModel {
         payload = json['payload'],
         mood = json['mood'],
         createdAt = json['createdAt'],
-        liked = json['liked'];
+        liked = json['liked'],
+        likes = json['likes'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -29,6 +32,7 @@ class PostModel {
         'mood': mood,
         'createdAt': createdAt,
         'liked': liked,
+        'likes': likes,
       };
 
   String elapsedString() {

@@ -181,32 +181,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       Gaps.v12,
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        padding: const EdgeInsets.only(right: 12.0, left: 6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InkWell(
-                              onTap: () {
-                                final notifier =
-                                    ref.read(postProvider.notifier);
-                                data[index].liked
-                                    ? notifier.dislikePost(
-                                        data[index].id,
-                                      )
-                                    : notifier.likePost(
-                                        data[index].id,
-                                      );
-                              },
-                              child: FaIcon(
-                                data[index].liked
-                                    ? FontAwesomeIcons.solidHeart
-                                    : FontAwesomeIcons.heart,
-                                color: Colors.white,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        final notifier =
+                                            ref.read(postProvider.notifier);
+                                        data[index].liked
+                                            ? notifier.dislikePost(
+                                                data[index].id,
+                                              )
+                                            : notifier.likePost(
+                                                data[index].id,
+                                              );
+                                      },
+                                      child: FaIcon(
+                                        data[index].liked
+                                            ? FontAwesomeIcons.solidHeart
+                                            : FontAwesomeIcons.heart,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Gaps.h12,
+                                    InkWell(
+                                      onTap: () {},
+                                      child: const FaIcon(
+                                        FontAwesomeIcons.comment,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  textAlign: TextAlign.end,
+                                  data[index].elapsedString(),
+                                  style: const TextStyle(color: Colors.white),
+                                )
+                              ],
                             ),
                             Text(
-                              textAlign: TextAlign.end,
-                              data[index].elapsedString(),
+                              "${data[index].likes} Likes",
                               style: const TextStyle(color: Colors.white),
                             )
                           ],
