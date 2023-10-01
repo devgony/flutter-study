@@ -43,6 +43,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   shared_preferences: ^2.2.1
   intl: ^0.18.1
+  list_wheel_scroll_view_nls: ^0.0.3
 
 dev_dependencies:
   flutter_test:

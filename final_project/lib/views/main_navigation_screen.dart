@@ -84,7 +84,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
         color: isDark ? Colors.black : Colors.white,
         child: Padding(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom + Sizes.size12,
+            bottom: MediaQuery.of(context).padding.bottom, // + Sizes.size12,
           ),
           child: Padding(
             padding: const EdgeInsets.all(Sizes.size12),
