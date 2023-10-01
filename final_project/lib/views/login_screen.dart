@@ -1,5 +1,6 @@
 import 'package:final_project/utils.dart';
 import 'package:final_project/views/sign_up_screen.dart';
+import 'package:final_project/widgets/fire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,8 +45,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "🔥 MOOD 🔥",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+          "NoMood coders",
+          // style: TextStyle(fontSize: 24, fontWeight: FontWeight.w300),
         ),
       ),
       body: SafeArea(
@@ -60,7 +61,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               const Expanded(
                 flex: 1,
-                child: Text("Welcome"),
+                child: Fire(
+                  size: 100,
+                ),
               ),
               const Expanded(
                 flex: 1,
@@ -78,7 +81,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       TextFormField(
                         decoration: InputDecoration(
-                          hintText: 'email',
+                          hintText: 'Email',
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.grey.shade400,
@@ -162,8 +165,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           borderRadius: BorderRadius.circular(0),
                         ),
                       ),
-                      onPressed: () =>
-                          context.pushNamed(SignUpScreen.routeName),
+                      onPressed: () => context.goNamed(SignUpScreen.routeName),
                       child: const Text(
                         'Create new account',
                         style: TextStyle(color: Colors.black),

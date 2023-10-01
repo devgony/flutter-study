@@ -1,4 +1,5 @@
 import 'package:final_project/utils.dart';
+import 'package:final_project/widgets/fire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,8 +43,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+          "Be a NoMood coder",
+          // style: TextStyle(fontSize: 24, fontWeight: FontWeight.w300),
         ),
       ),
       body: SafeArea(
@@ -58,13 +59,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               ),
               const Expanded(
                 flex: 1,
-                child: Text(
-                  "Create a new account",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: Fire(size: 100),
               ),
               const Expanded(
                 flex: 1,
@@ -166,7 +161,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           borderRadius: BorderRadius.circular(0),
                         ),
                       ),
-                      onPressed: () => context.pushNamed(LoginScreen.routeName),
+                      onPressed: () => context.goNamed(LoginScreen.routeName),
                       child: const Text(
                         'Already have an account? Log in.',
                         style: TextStyle(color: Colors.black),

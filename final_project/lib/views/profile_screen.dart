@@ -1,5 +1,6 @@
 import 'package:final_project/view_models/post_view_model.dart';
 import 'package:final_project/views/settings_screen.dart';
+import 'package:final_project/widgets/fire.dart';
 import 'package:final_project/widgets/grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,15 +60,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       headerSliverBuilder: (context, innerBoxIsScrolled) {
                         return [
                           SliverAppBar(
-                            // title: Text(data.name),
+                            title: const Fire(size: 50),
                             actions: [
-                              // IconButton(
-                              //   onPressed: _onEditPressed,
-                              //   icon: const FaIcon(
-                              //     FontAwesomeIcons.penToSquare,
-                              //     size: Sizes.size20,
-                              //   ),
-                              // ),
                               IconButton(
                                 onPressed: _onGearPressed,
                                 icon: const FaIcon(

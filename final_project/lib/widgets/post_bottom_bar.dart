@@ -1,13 +1,17 @@
 import 'package:final_project/widgets/write_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import '../constants/gaps.dart';
 import '../models/post_model.dart';
+import '../repositories/authentication_repository.dart';
 import '../utils.dart';
 import '../view_models/post_view_model.dart';
 import '../view_models/settings_view_model.dart';
+import '../views/home_screen.dart';
 
 class PostBottomBar extends ConsumerWidget {
   final PostModel post;
@@ -68,6 +72,40 @@ class PostBottomBar extends ConsumerWidget {
                     color: color,
                   ),
                 ),
+                Gaps.h12,
+                post.creatorId == ref.read(authRepository).user!.uid
+                    ? InkWell(
+                        onTap: () {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) => CupertinoAlertDialog(
+                              title: const Text("Are you sure to Delete?"),
+                              content: const Text("Can't be recovered"),
+                              actions: [
+                                CupertinoDialogAction(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text("No"),
+                                ),
+                                CupertinoDialogAction(
+                                  onPressed: () {
+                                    ref
+                                        .read(postProvider.notifier)
+                                        .deletePost(post.id);
+                                    context.push(HomeScreen.routeURL);
+                                  },
+                                  isDestructiveAction: true,
+                                  child: const Text("Yes"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.trashCan,
+                          color: color,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
             Text(

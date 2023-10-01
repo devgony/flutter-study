@@ -1,4 +1,5 @@
 import 'package:final_project/constants/gaps.dart';
+import 'package:final_project/widgets/fire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,8 +27,11 @@ class _PostScreenState extends ConsumerState<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Post Screen'),
+        title: const Fire(size: 50),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        elevation: 0,
       ),
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -69,13 +73,13 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                   keyboardType: TextInputType.multiline,
                   maxLines: 15,
                   minLines: 10,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Write it down here...",
+                    hintText: "Write down here...",
                     hintStyle: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: Colors.grey.shade100,
                     ),
                   ),
                 ),
@@ -98,7 +102,7 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                     (e) => IconButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                          _mood.id == e.id ? Colors.red : Colors.white,
+                          _mood.id == e.id ? Colors.red.shade400 : Colors.white,
                         ),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
@@ -125,6 +129,9 @@ class _PostScreenState extends ConsumerState<PostScreen> {
             ),
           ),
           ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red.shade400),
+            ),
             onPressed: () {
               if (_textController.text.isEmpty) {
                 return;
@@ -137,9 +144,12 @@ class _PostScreenState extends ConsumerState<PostScreen> {
               _textController.clear();
               _mood = Mood.love;
 
-              context.go(HomeScreen.routeURL);
+              context.push(HomeScreen.routeURL);
             },
-            child: const Text("Post"),
+            child: const Text(
+              "Post",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
           )
         ],
       ),

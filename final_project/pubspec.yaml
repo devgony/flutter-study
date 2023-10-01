@@ -45,6 +45,7 @@ dependencies:
   intl: ^0.18.1
   list_wheel_scroll_view_nls: ^0.0.3
   image_picker: 0.8.6
+  lottie: 2.3.2
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/animations/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

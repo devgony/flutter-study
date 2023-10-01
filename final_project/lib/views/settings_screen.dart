@@ -20,7 +20,7 @@ class SettingsScreen extends ConsumerWidget {
         title: const Text('Settings'),
         leading: IconButton(
           onPressed: () {
-            context.push("/profile");
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back),
         ),

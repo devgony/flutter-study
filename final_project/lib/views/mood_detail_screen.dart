@@ -1,3 +1,4 @@
+import 'package:final_project/widgets/fire.dart';
 import 'package:final_project/widgets/post_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -76,8 +77,21 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
     final isDark = ref.watch(settingsProvider).darkMode;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "${post.mood.emoji} ${post.mood.id.toUpperCase()} ${post.mood.emoji}",
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Fire(size: 50),
+            Text(
+              post.mood.id.toUpperCase(),
+            ),
+            Gaps.h4,
+            Text(
+              post.mood.emoji,
+              style: const TextStyle(fontSize: 40),
+            ),
+          ],
         ),
       ),
       body: Padding(

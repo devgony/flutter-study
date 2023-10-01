@@ -30,7 +30,7 @@ class NavTab extends ConsumerWidget {
       child: GestureDetector(
         onTap: () => onTap(),
         child: Container(
-          color: isDark ? Colors.black : Colors.white,
+          color: isDark ? Colors.black : Colors.grey.shade100,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: isSelected ? 1 : 0.6,

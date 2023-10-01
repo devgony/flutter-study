@@ -85,7 +85,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
         ],
       ),
       bottomNavigationBar: Container(
-        color: isDark ? Colors.black : Colors.white,
+        color: isDark ? Colors.black : Colors.grey.shade100,
         child: Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).padding.bottom, // + Sizes.size12,

@@ -87,6 +87,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       //     ),
       //   ],
       // ),
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: ref.watch(postProvider).when(
         data: (data) {
           if (data.isEmpty) {
