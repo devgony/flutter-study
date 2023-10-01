@@ -77,6 +77,7 @@ class PostBottomBar extends ConsumerWidget {
             )
           ],
         ),
+        Gaps.v8,
         Row(
           children: [
             Text(

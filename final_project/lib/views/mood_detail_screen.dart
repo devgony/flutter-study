@@ -6,6 +6,7 @@ import '../constants/gaps.dart';
 import '../models/comment_model.dart';
 import '../models/post_model.dart';
 import '../view_models/post_view_model.dart';
+import '../view_models/settings_view_model.dart';
 import '../widgets/avatar.dart';
 
 class MoodDetailScreen extends ConsumerStatefulWidget {
@@ -71,8 +72,8 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final post = widget.post;
+    final isDark = ref.watch(settingsProvider).darkMode;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -97,9 +98,9 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                 Gaps.h12,
                 Text(
                   post.creatorEmail,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
-                    color: Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
               ],
@@ -163,7 +164,7 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                 if (snapshot.hasData) {
                   return PostBottomBar(
                     post: snapshot.data!,
-                    color: Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                   );
                 }
                 return const Center(

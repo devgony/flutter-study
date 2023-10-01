@@ -1,4 +1,5 @@
 import 'package:final_project/view_models/post_view_model.dart';
+import 'package:final_project/views/settings_screen.dart';
 import 'package:final_project/widgets/grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,19 +26,11 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _onGearPressed() {
-    // Navigator.of(context).push(
-    // MaterialPageRoute(
-    // builder: (context) => const SettingsScreen(),
-    // ),
-    // );
-  }
-
-  void _onEditPressed() {
-    // Navigator.of(context).push(
-    // MaterialPageRoute(
-    // builder: (context) => const ProfileEditScreen(),
-    // ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
+      ),
+    );
   }
 
   @override
@@ -68,13 +61,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           SliverAppBar(
                             // title: Text(data.name),
                             actions: [
-                              IconButton(
-                                onPressed: _onEditPressed,
-                                icon: const FaIcon(
-                                  FontAwesomeIcons.penToSquare,
-                                  size: Sizes.size20,
-                                ),
-                              ),
+                              // IconButton(
+                              //   onPressed: _onEditPressed,
+                              //   icon: const FaIcon(
+                              //     FontAwesomeIcons.penToSquare,
+                              //     size: Sizes.size20,
+                              //   ),
+                              // ),
                               IconButton(
                                 onPressed: _onGearPressed,
                                 icon: const FaIcon(
