@@ -15,9 +15,11 @@ import '../widgets/persistance_tab_bar.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   final String tab;
+  final void Function(int) onTap;
 
   const ProfileScreen({
     super.key,
+    required this.onTap,
     required this.tab,
   });
 
@@ -78,6 +80,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 Avatar(
                                   uid: data.uid,
                                   email: data.email,
+                                  hasAvatar: data.hasAvatar,
                                 ),
                                 Gaps.v20,
                                 Row(
@@ -110,23 +113,49 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       },
                       body: TabBarView(
                         children: [
-                          ref.watch(postProvider).when(
-                                data: (
-                                  data,
-                                ) =>
-                                    GridViewPosts(data: data, width: width / 3),
-                                error: (
-                                  error,
-                                  stackTrace,
-                                ) =>
-                                    Center(
-                                  child: Text(error.toString()),
-                                ),
-                                loading: () => const Center(
-                                  child: CircularProgressIndicator.adaptive(),
-                                ),
-                              ),
+                          // ref.watch(postProvider).when(
+                          //       data: (
+                          //         data,
+                          //       ) =>
+                          //           GridViewPosts(data: data, width: width / 3),
+                          //       error: (
+                          //         error,
+                          //         stackTrace,
+                          //       ) =>
+                          //           Center(
+                          //         child: Text(error.toString()),
+                          //       ),
+                          //       loading: () => const Center(
+                          //         child: CircularProgressIndicator.adaptive(),
+                          //       ),
+                          //     ),
+                          StreamBuilder(
+                            stream: ref
+                                .watch(postProvider.notifier)
+                                .subscribeMyPosts(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                print(snapshot.stackTrace.toString());
+                                print(snapshot.error.toString());
+                                return Center(
+                                  child: Text(snapshot.error.toString()),
+                                );
+                              }
+                              if (snapshot.hasData) {
+                                final data = snapshot.data as List<PostModel>;
+                                return GridViewPosts(
+                                  data: data,
+                                  width: width / 3,
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              );
+                            },
+                          ),
                           FutureBuilder(
+                            future:
+                                ref.watch(usersProvider.notifier).likedPosts(),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return Center(
@@ -144,8 +173,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 child: CircularProgressIndicator.adaptive(),
                               );
                             },
-                            future:
-                                ref.watch(usersProvider.notifier).likedPosts(),
                           ),
                         ],
                       ),

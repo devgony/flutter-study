@@ -1,3 +1,4 @@
+import 'package:final_project/models/user_model.dart';
 import 'package:final_project/repositories/authentication_repository.dart';
 import 'package:final_project/view_models/post_view_model.dart';
 import 'package:flutter/material.dart';
@@ -72,11 +73,31 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
                 flex: 1,
                 child: Column(
                   children: [
-                    Avatar(
-                      email: ref.read(authRepository).user!.email!,
-                      uid: ref.read(authRepository).user!.uid,
-                      size: 20,
+                    FutureBuilder(
+                      future: ref.read(authRepository).me(),
+                      builder: (
+                        context,
+                        AsyncSnapshot<UserModel> snapshot,
+                      ) {
+                        if (snapshot.hasData) {
+                          return Avatar(
+                            email: ref.read(authRepository).user!.email!,
+                            uid: ref.read(authRepository).user!.uid,
+                            size: 20,
+                            hasAvatar: snapshot.data!.hasAvatar,
+                          );
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
                     ),
+
+                    // Avatar(
+                    //   email: ref.read(authRepository).user!.email!,
+                    //   uid: ref.read(authRepository).user!.uid,
+                    //   size: 20,
+                    //   hasAvatar: ref.read(authRepository).me().hasAvatar,
+                    // ),
                     Expanded(
                       child: VerticalDivider(
                         width: Sizes.size32,
@@ -90,6 +111,7 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
                       email: widget.post.creatorEmail,
                       uid: widget.post.creatorId,
                       size: 15,
+                      hasAvatar: widget.post.hasAvatar,
                     ),
                   ],
                 ),

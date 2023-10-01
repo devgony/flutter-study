@@ -53,6 +53,7 @@ class GridViewPosts extends StatelessWidget {
                     child: Material(
                       type: MaterialType.transparency,
                       child: Text(
+                        textAlign: TextAlign.center,
                         data[index].payload,
                         style: const TextStyle(
                           fontSize: 16,

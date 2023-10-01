@@ -17,11 +17,13 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
   }
 
   Future<void> createPost(String payload, String mood) async {
+    final hasAvatar = (await _authenticationRepository.me()).hasAvatar;
     await _postRepository.createPost(
       payload: payload,
       mood: mood,
       uid: _authenticationRepository.user!.uid,
       email: _authenticationRepository.user!.email!,
+      hasAvatar: hasAvatar,
     );
   }
 
@@ -29,8 +31,13 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
     await _postRepository.deletePost(id);
   }
 
-  Stream<List<PostModel>> getPosts() {
-    return _postRepository.getPosts(_authenticationRepository.user!.uid);
+  Stream<List<PostModel>> subscribePosts() {
+    return _postRepository.subscribePosts(_authenticationRepository.user!.uid);
+  }
+
+  Stream<List<PostModel>> subscribeMyPosts() {
+    return _postRepository
+        .subscribeMyPosts(_authenticationRepository.user!.uid);
   }
 
   Stream<PostModel> subscribePost(String postId) {
@@ -60,7 +67,7 @@ class PostViewModel extends StreamNotifier<List<PostModel>> {
   @override
   Stream<List<PostModel>> build() {
     _authenticationRepository = ref.read(authRepository);
-    return getPosts();
+    return subscribePosts();
   }
 
   // Future<void> searchPosts(String PostId, String keyword) async {

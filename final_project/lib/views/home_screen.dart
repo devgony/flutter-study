@@ -12,8 +12,9 @@ import '../constants/gaps.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = 'home';
-  static const routeURL = '/';
-  const HomeScreen({Key? key}) : super(key: key);
+  static const routeURL = '/home';
+  final void Function(int) onTap;
+  const HomeScreen({Key? key, required this.onTap}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
@@ -136,6 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             email: post.creatorEmail,
                             uid: post.creatorId,
                             size: 20,
+                            hasAvatar: post.hasAvatar,
                           ),
                           Gaps.h12,
                           Text(
@@ -186,6 +188,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     child: Material(
                                       type: MaterialType.transparency,
                                       child: Text(
+                                        textAlign: TextAlign.center,
                                         post.payload,
                                         style: const TextStyle(
                                           fontSize: 24,

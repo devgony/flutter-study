@@ -18,14 +18,14 @@ class UsersViewModel extends AsyncNotifier<UserModel> {
     _authenticationRepository = ref.read(authRepository);
 
     if (_authenticationRepository.isLoggedIn) {
-      final profile =
+      final user =
           await _usersRepository.findUser(_authenticationRepository.user!.uid);
-      if (profile != null) {
+      if (user != null) {
         final List<String> likedPosts = List.castFrom<dynamic, String>(
-          profile["likedPosts"],
+          user["likedPosts"],
         );
         return UserModel.fromJson(
-          {...profile, "likedPosts": likedPosts},
+          {...user, "likedPosts": likedPosts},
         );
       }
     }

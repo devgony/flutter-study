@@ -11,16 +11,17 @@ import '../repositories/authentication_repository.dart';
 import '../utils.dart';
 import '../view_models/post_view_model.dart';
 import '../view_models/settings_view_model.dart';
-import '../views/home_screen.dart';
 
 class PostBottomBar extends ConsumerWidget {
   final PostModel post;
   final Color color;
+  final bool onDetailScreen;
 
   const PostBottomBar({
     super.key,
     required this.post,
     this.color = Colors.white,
+    this.onDetailScreen = false,
   });
 
   @override
@@ -91,7 +92,11 @@ class PostBottomBar extends ConsumerWidget {
                                     ref
                                         .read(postProvider.notifier)
                                         .deletePost(post.id);
-                                    context.push(HomeScreen.routeURL);
+                                    context.pop();
+                                    if (onDetailScreen) {
+                                      context.pop();
+                                    }
+                                    // context.push(HomeScreen.routeURL);
                                   },
                                   isDestructiveAction: true,
                                   child: const Text("Yes"),

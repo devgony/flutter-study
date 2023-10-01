@@ -12,11 +12,13 @@ class Avatar extends ConsumerWidget {
   final String email;
   final String uid;
   final double size;
+  final hasAvatar;
 
   const Avatar({
     super.key,
     required this.email,
     required this.uid,
+    required this.hasAvatar,
     this.size = 50.0,
   });
 
@@ -50,13 +52,15 @@ class Avatar extends ConsumerWidget {
             )
           : CircleAvatar(
               radius: size,
-              foregroundImage: Image.network(
-                "https://firebasestorage.googleapis.com/v0/b/$projectName.appspot.com/o/avatars%2F$uid?alt=media&haha=${DateTime.now().toString()}",
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.error),
-              ).image,
-              child: Text(email.substring(0, 1),
-                  style: const TextStyle(fontSize: 10)),
+              foregroundImage: hasAvatar
+                  ? NetworkImage(
+                      "https://firebasestorage.googleapis.com/v0/b/$projectName.appspot.com/o/avatars%2F$uid?alt=media&haha=${DateTime.now().toString()}",
+                    )
+                  : null,
+              child: Text(
+                email.substring(0, 1),
+                style: const TextStyle(fontSize: 10),
+              ),
             ),
     );
   }

@@ -108,6 +108,7 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                   email: post.creatorEmail,
                   uid: post.creatorId,
                   size: 20,
+                  hasAvatar: post.hasAvatar,
                 ),
                 Gaps.h12,
                 Text(
@@ -179,6 +180,7 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                   return PostBottomBar(
                     post: snapshot.data!,
                     color: isDark ? Colors.white : Colors.black,
+                    onDetailScreen: true,
                   );
                 }
                 return const Center(
@@ -214,6 +216,7 @@ class _MoodDetailScreenState extends ConsumerState<MoodDetailScreen>
                               email: comment.creatorEmail,
                               uid: comment.creatorId,
                               size: 20,
+                              hasAvatar: comment.hasAvatar,
                             ),
                             title: Text(comment.creatorEmail),
                             subtitle: Text(comment.payload),

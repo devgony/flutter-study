@@ -2,17 +2,16 @@ import 'package:final_project/constants/gaps.dart';
 import 'package:final_project/widgets/fire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_wheel_scroll_view_nls/list_wheel_scroll_view_nls.dart';
 
 import '../models/post_model.dart';
 import '../view_models/post_view_model.dart';
-import 'home_screen.dart';
 
 class PostScreen extends ConsumerStatefulWidget {
   static const routeName = 'post';
   static const routeURL = '/post';
-  const PostScreen({Key? key}) : super(key: key);
+  final void Function(int) onTap;
+  const PostScreen({Key? key, required this.onTap}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PostScreenState();
@@ -22,6 +21,13 @@ class _PostScreenState extends ConsumerState<PostScreen> {
   final _textController = TextEditingController();
   Mood _mood = Mood.love;
   final _scrollController = FixedExtentScrollController(initialItem: 2);
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +148,11 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                   .createPost(_textController.text, _mood.id);
 
               _textController.clear();
-              _mood = Mood.love;
+              _scrollController.jumpToItem(2);
+              // _mood = Mood.love;
+              setState(() {});
 
-              context.push(HomeScreen.routeURL);
+              widget.onTap(0);
             },
             child: const Text(
               "Post",

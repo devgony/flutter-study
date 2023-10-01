@@ -24,7 +24,7 @@ class MainNavigationScreen extends ConsumerStatefulWidget {
 }
 
 class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
-  final List<String> _tabs = ["", "post", "profile"];
+  final List<String> _tabs = ["home", "post", "profile"];
 
   late int _selectedIndex = _tabs.indexOf(widget.tab);
 
@@ -70,15 +70,16 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
         children: [
           Offstage(
             offstage: _selectedIndex != 0,
-            child: const HomeScreen(),
+            child: HomeScreen(onTap: _onTap),
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const PostScreen(),
+            child: PostScreen(onTap: _onTap),
           ),
           Offstage(
             offstage: _selectedIndex != 2,
-            child: const ProfileScreen(
+            child: ProfileScreen(
+              onTap: _onTap,
               tab: "",
             ),
           ),

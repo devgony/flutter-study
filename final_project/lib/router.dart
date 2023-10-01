@@ -8,12 +8,12 @@ import 'package:go_router/go_router.dart';
 
 final routerProvider = Provider(
   (ref) => GoRouter(
-    initialLocation: "/",
+    initialLocation: "/home",
     redirect: (context, state) {
       final isLoggedIn = ref.read(authRepository).isLoggedIn;
       if (!isLoggedIn) {
-        if (state.matchedLocation != SignUpScreen.routeURL &&
-            state.matchedLocation != LoginScreen.routeURL) {
+        if (state.subloc != SignUpScreen.routeURL &&
+            state.subloc != LoginScreen.routeURL) {
           return LoginScreen.routeURL;
         }
       }
@@ -36,10 +36,10 @@ final routerProvider = Provider(
         builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
-        path: "/:tab(|post|profile)",
+        path: "/:tab(home|post|profile)",
         name: MainNavigationScreen.routeName,
         builder: (context, state) {
-          final tab = state.pathParameters["tab"]!;
+          final tab = state.params["tab"]!;
           return MainNavigationScreen(tab: tab);
         },
       ),

@@ -11,6 +11,21 @@ class PostRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  subscribeMyPosts(String userId) => _db
+      .collection("posts")
+      .where("creatorId", isEqualTo: userId)
+      .orderBy("createdAt", descending: true)
+      .snapshots()
+      .map(
+        (event) => event.docs
+            .map(
+              (doc) => fromSnapshotToPostModel(doc, userId),
+            )
+            .where((x) => x != null)
+            .map((e) => e!)
+            .toList(),
+      );
+
   Stream<List<CommentModel>> subscribeComments(String postId) => _db
       .collection("posts")
       .doc(postId)
@@ -92,6 +107,7 @@ class PostRepository {
     required String mood,
     required String uid,
     required String email,
+    required bool hasAvatar,
   }) async {
     final post = {
       "payload": payload,
@@ -102,6 +118,7 @@ class PostRepository {
       "creatorEmail": email,
       "creatorId": uid,
       "commentCount": 0,
+      "hasAvatar": hasAvatar,
     };
     await _db.collection("posts").add(post);
   }
@@ -110,7 +127,7 @@ class PostRepository {
     await _db.collection("posts").doc(id).delete();
   }
 
-  Stream<List<PostModel>> getPosts(String userId) => _db
+  Stream<List<PostModel>> subscribePosts(String userId) => _db
       .collection("posts")
       .orderBy("createdAt", descending: true)
       .snapshots()

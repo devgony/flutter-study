@@ -6,6 +6,7 @@ class CommentModel {
   final String creatorEmail;
   final String payload;
   final Timestamp createdAt;
+  final bool hasAvatar;
 
   CommentModel({
     required this.id,
@@ -13,6 +14,7 @@ class CommentModel {
     required this.creatorEmail,
     required this.payload,
     required this.createdAt,
+    required this.hasAvatar,
   });
 
   factory CommentModel.fromJson(
@@ -24,6 +26,7 @@ class CommentModel {
       creatorEmail: json['creatorEmail'],
       payload: json['payload'],
       createdAt: json['createdAt'],
+      hasAvatar: json['hasAvatar'],
     );
   }
 
@@ -32,6 +35,7 @@ class CommentModel {
         'creatorId': creatorId,
         'creatorEmail': creatorEmail,
         'payload': payload,
+        'hasAvatar': hasAvatar,
         'createdAt': createdAt,
       };
 }

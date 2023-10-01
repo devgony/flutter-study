@@ -11,6 +11,7 @@ class PostModel {
   final int commentCount;
   final String creatorEmail;
   final String creatorId;
+  final bool hasAvatar;
 
   PostModel({
     required this.id,
@@ -22,17 +23,19 @@ class PostModel {
     required this.creatorEmail,
     required this.creatorId,
     required this.commentCount,
+    required this.hasAvatar,
   });
 
   PostModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         payload = json['payload'],
         mood = json['mood'],
-        createdAt = json['createdAt'],
+        createdAt = json['createdAt'] ?? Timestamp.now(),
         liked = json['liked'],
         creatorEmail = json['creatorEmail'],
         creatorId = json['creatorId'],
         commentCount = json['commentCount'],
+        hasAvatar = json['hasAvatar'],
         likes = json['likes'];
 
   Map<String, dynamic> toJson() => {
@@ -44,6 +47,7 @@ class PostModel {
         'creatorId': creatorId,
         'liked': liked,
         'likes': likes,
+        'hasAvatar': hasAvatar,
         'commentCount': commentCount,
       };
 
