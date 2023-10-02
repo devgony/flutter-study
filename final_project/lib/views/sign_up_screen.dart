@@ -1,4 +1,3 @@
-import 'package:final_project/utils.dart';
 import 'package:final_project/widgets/fire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,9 +38,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text(
           "Be a NoMood coder",
           // style: TextStyle(fontSize: 24, fontWeight: FontWeight.w300),
@@ -162,9 +163,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         ),
                       ),
                       onPressed: () => context.goNamed(LoginScreen.routeName),
-                      child: const Text(
+                      child: Text(
                         'Already have an account? Log in.',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
                   ],

@@ -1,4 +1,3 @@
-import 'package:final_project/utils.dart';
 import 'package:final_project/views/sign_up_screen.dart';
 import 'package:final_project/widgets/fire.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +40,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(
     BuildContext context,
   ) {
-    final isDark = isDarkMode(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text(
           "NoMood coders",
           // style: TextStyle(fontSize: 24, fontWeight: FontWeight.w300),
         ),
+        backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
         child: Padding(
@@ -166,9 +167,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       onPressed: () => context.goNamed(SignUpScreen.routeName),
-                      child: const Text(
+                      child: Text(
                         'Create new account',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
                   ],
