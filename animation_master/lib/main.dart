@@ -1,18 +1,24 @@
+import 'package:animation_master/router.dart';
 import 'package:flutter/material.dart';
-
-import 'first_homework.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(const App());
+  GoRouter.optionURLReflectsImperativeAPIs = true;
+  runApp(
+    const ProviderScope(
+      child: App(),
+    ),
+  );
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: FirstHomeWork(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp.router(
+      routerConfig: ref.watch(routerProvider),
     );
   }
 }
