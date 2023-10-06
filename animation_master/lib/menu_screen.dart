@@ -1,8 +1,9 @@
+import 'package:animation_master/day59_explicit_animations.dart';
+import 'package:animation_master/day61_custom_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'day57_implicit_animations.dart';
-import 'day59_explicit_animations.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({
@@ -17,7 +18,8 @@ class MenuScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             HomeworkButton(widget: Day57ImplicitAnimations()),
-            HomeworkButton(widget: Day59ExplicitAnimations())
+            HomeworkButton(widget: Day59ExplicitAnimations()),
+            HomeworkButton(widget: Day61CustomPainter())
           ],
         ),
       ),
