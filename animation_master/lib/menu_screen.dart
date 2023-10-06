@@ -1,4 +1,5 @@
 import 'package:animation_master/day59_explicit_animations.dart';
+import 'package:animation_master/day61_custom_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,7 +19,8 @@ class MenuScreen extends StatelessWidget {
           // crossAxisAlignment: CrossAxisAlignment.center, // why does not work?
           children: const [
             HomeworkButton(widget: Day57ImplicitAnimations()),
-            HomeworkButton(widget: Day59ExplicitAnimations())
+            HomeworkButton(widget: Day59ExplicitAnimations()),
+            HomeworkButton(widget: Day61CustomPainter())
           ],
         ),
       ),
