@@ -1,6 +1,7 @@
 import 'package:animation_master/day57_implicit_animations.dart';
 import 'package:animation_master/day59_explicit_animations.dart';
 import 'package:animation_master/day61_custom_painter.dart';
+import 'package:animation_master/day64_flashcards_app.dart';
 import 'package:animation_master/menu_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,12 +9,13 @@ import 'package:go_router/go_router.dart';
 
 final routerProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: "/${const Day61CustomPainter()}",
+    initialLocation: "/${const Day64FlashcardsApp()}",
     routes: [
       _getRoute(const MenuScreen()),
       _getRoute(const Day57ImplicitAnimations()),
       _getRoute(const Day59ExplicitAnimations()),
-      _getRoute(const Day61CustomPainter())
+      _getRoute(const Day61CustomPainter()),
+      _getRoute(const Day64FlashcardsApp())
     ],
   );
 });
