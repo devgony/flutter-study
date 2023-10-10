@@ -1,5 +1,6 @@
 import 'package:animation_master/day59_explicit_animations.dart';
 import 'package:animation_master/day61_custom_painter.dart';
+import 'package:animation_master/day64_flashcards_app.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +20,8 @@ class MenuScreen extends StatelessWidget {
           children: const [
             HomeworkButton(widget: Day57ImplicitAnimations()),
             HomeworkButton(widget: Day59ExplicitAnimations()),
-            HomeworkButton(widget: Day61CustomPainter())
+            HomeworkButton(widget: Day61CustomPainter()),
+            HomeworkButton(widget: Day64FlashcardsApp())
           ],
         ),
       ),
