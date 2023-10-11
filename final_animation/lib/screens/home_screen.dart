@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:final_animation/screens/pokemon_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../constants/gaps.dart';
 import '../repositories/pokemon_repository.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,36 +18,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentPage = 0;
 
-  bool _isExpanded = false;
+  bool onDetail = false;
+  void goToDetail(DragEndDetails _) => setState(() => onDetail = true);
+  void goToMain() {
+    setState(() => onDetail = false);
+  }
 
-  PageController _pageController = PageController(
+  final PageController _pageController = PageController(
     viewportFraction: 0.8,
   );
   final ValueNotifier<double> _scroll = ValueNotifier(0.0);
-
-  // void _onTap(int imageIndex) {
-  //   Navigator.push(
-  //     context,
-  //     PageRouteBuilder(
-  //       fullscreenDialog: true,
-  //       pageBuilder: (context, animation, secondaryAnimation) {
-  //         return SlideTransition(
-  //           position: animation.drive(
-  //             Tween(
-  //               begin: const Offset(0, 0.5),
-  //               end: const Offset(0, 0),
-  //             ).chain(
-  //               CurveTween(curve: Curves.easeInOut),
-  //             ),
-  //           ),
-  //           child: PokemonDetailScreen(
-  //             index: imageIndex,
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 
   @override
   void initState() {
@@ -90,90 +72,151 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          PokemonDetailScreen(
+            index: _currentPage,
+            goToMain: goToMain,
+          ).animate(target: onDetail ? 1 : 0).slideY(
+                begin: -1,
+                end: 0,
+                duration: 500.milliseconds,
+                curve: Curves.easeInOut,
+              ),
           PageView.builder(
             onPageChanged: (value) => setState(() => _currentPage = value),
             controller: _pageController,
             itemCount: pokemons.length,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Stack(
+            physics: onDetail
+                ? const NeverScrollableScrollPhysics()
+                : const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                PokemonDetailScreen(
-                  index: index,
-                )
-                    .animate(target: _isExpanded ? 1 : 0)
-                    .slideY(
-                      begin: -1,
-                      end: 0,
-                      duration: 500.milliseconds,
-                      curve: Curves.easeInOut,
-                    )
-                    .callback(
-                      callback: (_) => setState(
-                        () => _pageController = PageController(
-                          viewportFraction: 1,
-                        ),
-                      ),
-                    ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: _scroll,
-                      builder: (context, scroll, child) {
-                        final difference = (scroll - index).abs();
-                        final scale = 1 - (difference * 0.1);
-                        return GestureDetector(
-                          onVerticalDragEnd: (_) => setState(() {
-                            _isExpanded = !_isExpanded;
-                          }),
-                          child: Transform.scale(
-                            scale: scale,
-                            child: Container(
-                              height: 400,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.4),
-                                    blurRadius: 10,
-                                    spreadRadius: 2,
-                                    offset: const Offset(0, 8),
-                                  )
-                                ],
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    pokemons[index].image,
-                                  ),
-                                  fit: BoxFit.contain,
-                                ),
+                ValueListenableBuilder(
+                  valueListenable: _scroll,
+                  builder: (context, scroll, child) {
+                    final difference = (scroll - index).abs();
+                    final scale = 1 - (difference * 0.1);
+                    return GestureDetector(
+                      onVerticalDragEnd: (_) => setState(() {
+                        onDetail = !onDetail;
+                      }),
+                      child: Transform.scale(
+                        scale: scale,
+                        child: Column(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: FaIcon(
+                                onDetail
+                                    ? FontAwesomeIcons.chevronDown
+                                    : FontAwesomeIcons.chevronUp,
+                                color: Colors.white,
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    Text(
-                      pokemons[index].name,
-                      style: const TextStyle(color: Colors.white, fontSize: 24),
-                    ),
-                    Text(
-                      pokemons[index].description1,
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    const Text(
-                      "Official Rating",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ],
-                ).animate(target: _isExpanded ? 1 : 0).slideY(
-                      begin: 0,
-                      end: 1,
-                      duration: 500.milliseconds,
-                      curve: Curves.easeInOut,
-                    ),
+                            Gaps.v36,
+                            Stack(
+                              children: [
+                                Container(
+                                  height: 400,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.blue.shade800,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.4),
+                                        blurRadius: 10,
+                                        spreadRadius: 2,
+                                        offset: const Offset(0, 8),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    top: 250,
+                                  ),
+                                  height: 150,
+                                  width: double.infinity,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.4),
+                                        blurRadius: 10,
+                                        spreadRadius: 2,
+                                        offset: const Offset(0, 8),
+                                      )
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      pokemons[index].name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 400,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(pokemons[index].image),
+                                    ),
+                                  ),
+                                )
+                                    .animate(
+                                      target: onDetail ? 1 : 0,
+                                    )
+                                    .slideY(
+                                      begin: -0.3,
+                                      end: 0,
+                                      duration: 500.milliseconds,
+                                      curve: Curves.easeInOut,
+                                    ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Gaps.v24,
+                Text(
+                  pokemons[index].description1,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+                Gaps.v24,
+                const Text(
+                  "Official Rating",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
               ],
-            ),
+            ).animate(target: onDetail ? 1 : 0).slideY(
+                  begin: 0,
+                  end: 0.73,
+                  duration: 500.milliseconds,
+                  curve: Curves.easeInOut,
+                ),
           )
         ],
       ),
