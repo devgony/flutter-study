@@ -98,15 +98,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     final difference = (scroll - index).abs();
                     final scale = 1 - (difference * 0.1);
                     return GestureDetector(
-                      onVerticalDragEnd: (_) => setState(() {
-                        onDetail = !onDetail;
-                      }),
+                      onVerticalDragEnd: (_) =>
+                          setState(() => onDetail = !onDetail),
                       child: Transform.scale(
                         scale: scale,
                         child: Column(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () =>
+                                  setState(() => onDetail = !onDetail),
                               icon: FaIcon(
                                 onDetail
                                     ? FontAwesomeIcons.chevronDown
@@ -211,7 +211,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ],
-            ).animate(target: onDetail ? 1 : 0).slideY(
+            )
+                .animate(
+                  target: onDetail ? 1 : 0,
+                )
+                .slideY(
                   begin: 0,
                   end: 0.73,
                   duration: 500.milliseconds,
