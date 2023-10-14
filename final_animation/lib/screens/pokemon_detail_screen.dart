@@ -5,11 +5,11 @@ import '../repositories/pokemon_repository.dart';
 
 class PokemonDetailScreen extends StatefulWidget {
   final int index;
-  final void Function() goToMain;
+  // final void Function() goToMain;
   const PokemonDetailScreen({
     super.key,
     required this.index,
-    required this.goToMain,
+    // required this.goToMain,
   });
 
   @override

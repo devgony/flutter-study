@@ -19,10 +19,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentPage = 0;
 
   bool onDetail = false;
-  void goToDetail(DragEndDetails _) => setState(() => onDetail = true);
-  void goToMain() {
-    setState(() => onDetail = false);
-  }
+  // void goToDetail(DragEndDetails _) => setState(() => onDetail = true);
+  // void goToMain() {
+  //   setState(() => onDetail = false);
+  // }
 
   final PageController _pageController = PageController(
     viewportFraction: 0.8,
@@ -33,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pageController.addListener(() {
+      // print(_pageController.page);
+      // print(_scroll.value);
       if (_pageController.page == null) return;
       _scroll.value = _pageController.page!;
     });
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           PokemonDetailScreen(
             index: _currentPage,
-            goToMain: goToMain,
+            // goToMain: goToMain,
           ).animate(target: onDetail ? 1 : 0).slideY(
                 begin: -1,
                 end: 0,
@@ -97,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, scroll, child) {
                     final difference = (scroll - index).abs();
                     final scale = 1 - (difference * 0.1);
+                    print(scroll);
                     return GestureDetector(
                       onVerticalDragEnd: (_) =>
                           setState(() => onDetail = !onDetail),
@@ -187,6 +190,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       end: 0,
                                       duration: 500.milliseconds,
                                       curve: Curves.easeInOut,
+                                    )
+                                    .animate(
+                                      target:
+                                          scroll - _currentPage == 0.0 ? 0 : 1,
+                                    )
+                                    .slideX(
+                                      begin: 0,
+                                      end: 1,
+                                      duration: 500.milliseconds,
+                                      // curve: Curves.easeInOut,
                                     ),
                               ],
                             ),
@@ -221,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   duration: 500.milliseconds,
                   curve: Curves.easeInOut,
                 ),
-          )
+          ),
         ],
       ),
     );
