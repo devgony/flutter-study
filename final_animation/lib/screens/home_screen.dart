@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../constants/gaps.dart';
 import '../repositories/pokemon_repository.dart';
+import '../widgets/TypeContainer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,15 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          PokemonDetailScreen(
-            index: _currentPage,
-            // goToMain: goToMain,
-          ).animate(target: onDetail ? 1 : 0).slideY(
-                begin: -1,
-                end: 0,
-                duration: 500.milliseconds,
-                curve: Curves.easeInOut,
-              ),
           PageView.builder(
             onPageChanged: (value) => setState(() => _currentPage = value),
             controller: _pageController,
@@ -117,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            Gaps.v36,
+                            Gaps.v24,
                             Stack(
                               children: [
                                 Container(
@@ -164,14 +156,51 @@ class _HomeScreenState extends State<HomeScreen> {
                                       )
                                     ],
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      pokemons[index].name,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Gaps.v24,
+                                      Text(
+                                        pokemons[index].name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                        ),
                                       ),
-                                    ),
+                                      Gaps.v8,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ...pokemons[index]
+                                              .types
+                                              .map(
+                                                (type) =>
+                                                    TypeContainer(type: type),
+                                              )
+                                              .toList(),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 200,
+                                  right: 110,
+                                  child: Center(
+                                    child: const Image(
+                                      height: 100,
+                                      image: AssetImage(
+                                        "assets/images/pokeball.png",
+                                      ),
+                                    )
+                                        .animate(
+                                          onPlay: (controller) =>
+                                              controller.repeat(
+                                            period: 2.seconds,
+                                          ),
+                                        )
+                                        .rotate(),
                                   ),
                                 ),
                                 Container(
@@ -230,6 +259,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 .slideY(
                   begin: 0,
                   end: 0.73,
+                  duration: 500.milliseconds,
+                  curve: Curves.easeInOut,
+                ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 80,
+            child: PokemonDetailScreen(
+              index: _currentPage,
+              // goToMain: goToMain,
+            ).animate(target: onDetail ? 1 : 0).slideY(
+                  begin: -1,
+                  end: 0,
                   duration: 500.milliseconds,
                   curve: Curves.easeInOut,
                 ),
