@@ -183,6 +183,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 )
                                     .animate(
+                                      target: scroll - _currentPage,
+                                    )
+                                    .slideX(
+                                      begin: 0,
+                                      end: 1,
+                                      duration: 500.milliseconds,
+                                      curve: Curves.bounceOut,
+                                    )
+                                    .animate(
                                       target: onDetail ? 1 : 0,
                                     )
                                     .slideY(
@@ -191,16 +200,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       duration: 500.milliseconds,
                                       curve: Curves.easeInOut,
                                     )
-                                    .animate(
-                                      target:
-                                          scroll - _currentPage == 0.0 ? 0 : 1,
-                                    )
-                                    .slideX(
-                                      begin: 0,
-                                      end: 1,
-                                      duration: 500.milliseconds,
-                                      // curve: Curves.easeInOut,
-                                    ),
                               ],
                             ),
                           ],
