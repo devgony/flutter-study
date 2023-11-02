@@ -1,18 +1,25 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:threads/views/camera_screen.dart';
 
 import '../constants/sizes.dart';
 import '../utils.dart';
 
 class WriteScreen extends StatefulWidget {
-  const WriteScreen({Key? key}) : super(key: key);
+  const WriteScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<WriteScreen> createState() => _WriteScreenState();
 }
 
 class _WriteScreenState extends State<WriteScreen> {
+  XFile? _picture;
   final _textController = TextEditingController();
   final faker = Faker();
   final profile = getImage();
@@ -51,6 +58,7 @@ class _WriteScreenState extends State<WriteScreen> {
           leadingWidth: 80,
           backgroundColor: Colors.transparent,
           title: const Text('New thread'),
+          centerTitle: true,
           bottom: const PreferredSize(
             preferredSize: Size.fromHeight(1),
             child: Divider(
@@ -111,11 +119,50 @@ class _WriteScreenState extends State<WriteScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Icon(
-                        FontAwesomeIcons.paperclip,
-                        color: Colors.grey.shade600,
+                      child: GestureDetector(
+                        onTap: () async {
+                          final picture = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CameraScreen(),
+                            ),
+                          );
+
+                          setState(() {
+                            _picture = picture;
+                          });
+                        },
+                        child: Icon(
+                          FontAwesomeIcons.paperclip,
+                          color: Colors.grey.shade600,
+                        ),
                       ),
-                    )
+                    ),
+                    _picture != null
+                        ? Expanded(
+                            child: Stack(
+                              children: [
+                                Image.file(
+                                  File(_picture!.path),
+                                  fit: BoxFit.cover,
+                                ),
+                                Positioned(
+                                  top: 5,
+                                  right: 5,
+                                  child: GestureDetector(
+                                    onTap: () => setState(() {
+                                      _picture = null;
+                                    }),
+                                    child: Icon(
+                                      FontAwesomeIcons.solidCircleXmark,
+                                      color: Colors.grey.shade800,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                   ],
                 ),
               )
