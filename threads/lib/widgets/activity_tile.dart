@@ -38,7 +38,7 @@ class ActivityTile extends ConsumerWidget {
           SizedBox(
             width: 150,
             child: Text(
-              userModel.userId,
+              userModel.uid,
               overflow: TextOverflow.ellipsis,
             ),
           ),

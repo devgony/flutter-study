@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:threads/repos/user_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threads/view_models/settings_view_model.dart';
 
+import '../view_models/user_view_models.dart';
 import '../widgets/activity_tile.dart';
 
 class ActivityScreen extends ConsumerWidget {
@@ -70,28 +70,23 @@ class ActivityScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 16.0),
               child: TabBarView(
                 children: [
-                  FutureBuilder(
-                    future: UserRepository.searchUsers(""),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) => ActivityTile(
-                            userModel: snapshot.data![index],
+                  ref.watch(usersProvider("")).when(
+                        data: (data) => Flexible(
+                          child: ListView.separated(
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) => ActivityTile(
+                              userModel: data[index],
+                            ),
+                            itemCount: data.length,
+                            separatorBuilder: (context, index) => Divider(
+                              color: Colors.grey.shade300,
+                              indent: 72,
+                            ),
                           ),
-                          itemCount: snapshot.data!.length,
-                          separatorBuilder: (context, index) => Divider(
-                            color: Colors.grey.shade300,
-                            indent: 72,
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    },
-                  ),
+                        ),
+                        loading: () => const CircularProgressIndicator(),
+                        error: (error, stackTrace) => Text(error.toString()),
+                      ),
                   const Center(
                     child: Text("Replies"),
                   ),

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:threads/repos/user_repo.dart';
 
 import '../constants/gaps.dart';
 import '../view_models/settings_view_model.dart';
+import '../view_models/user_view_models.dart';
 import '../widgets/search_tile.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -60,32 +60,23 @@ class _DiscoverScreenState extends ConsumerState<SearchScreen> {
               placeholder: "Search",
             ),
             Gaps.v12,
-            FutureBuilder(
-              future: UserRepository.searchUsers(_searchController.value.text),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Flexible(
+            ref.watch(usersProvider(_searchController.value.text)).when(
+                  data: (data) => Flexible(
                     child: ListView.separated(
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) => SearchTile(
-                        userModel: snapshot.data![index],
+                        userModel: data[index],
                       ),
-                      itemCount: snapshot.data!.length,
+                      itemCount: data.length,
                       separatorBuilder: (context, index) => Divider(
-                        color: isDark
-                            ? Colors.grey.shade900
-                            : Colors.grey.shade200,
+                        color: Colors.grey.shade300,
                         indent: 72,
                       ),
                     ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
-            ),
+                  ),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stackTrace) => Text(error.toString()),
+                ),
           ],
         ),
       ),
