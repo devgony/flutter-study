@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157702746971",
+    "project_id": "threads-henry",
+    "storage_bucket": "threads-henry.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157702746971:android:f3437e1af8eb2f7fa1607e",
+        "android_client_info": {
+          "package_name": "com.example.threads"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzBgQclZlNAU8TLqW5ACQ2_15bnel6rIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
