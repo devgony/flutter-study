@@ -47,5 +47,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Upload Video for Mood</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Upload Video for Mood</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Plz let me see yout photos</string>
 </dict>
 </plist>
