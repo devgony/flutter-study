@@ -11,10 +11,10 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text("Popular Movies", style: TextStyle(fontSize: 24)),
           Gaps.v20,
           HorizontalScrollableMovies(

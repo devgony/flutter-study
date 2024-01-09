@@ -35,7 +35,7 @@ class MovieService {
 
     final movies = jsonDecode(response.body)['results'];
 
-    return movies.map<MovieModel>((v) => MovieModel.fromJson(v)).toList();
+    return movies.map<MovieModel>(MovieModel.fromJson).toList();
   }
 
   static Future<MovieDetailModel> fetchMovieById(int id) async {

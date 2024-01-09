@@ -1,3 +1,4 @@
+import 'package:animation_master/day57_implicit_animations_2nd.dart';
 import 'package:animation_master/day59_explicit_animations.dart';
 import 'package:animation_master/day61_custom_painter.dart';
 import 'package:animation_master/day64_flashcards_app.dart';
@@ -13,15 +14,16 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             HomeworkButton(widget: Day57ImplicitAnimations()),
+            HomeworkButton(widget: Day57ImplicitAnimations2nd()),
             HomeworkButton(widget: Day59ExplicitAnimations()),
             HomeworkButton(widget: Day61CustomPainter()),
-            HomeworkButton(widget: Day64FlashcardsApp())
+            HomeworkButton(widget: Day64FlashcardsApp()),
           ],
         ),
       ),

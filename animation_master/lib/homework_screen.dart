@@ -22,7 +22,7 @@ class HomeworkScreen extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          // padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: child,
         ),
       ),
